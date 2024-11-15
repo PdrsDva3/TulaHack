@@ -8,12 +8,19 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-	  "format": "prettier --write ./src"
+    "format": "prettier --write ./src",
+    "codegen": "npx @openapitools/openapi-generator-cli generate -i .\\src\\assets\\swagger.codegen.json -g typescript-axios -o .\\src\\api\\"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.1.7",
+    "@mui/material": "^6.1.7",
+    "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-	  "sass": "^1.79.4"
+    "react-router-dom": "^6.28.0",
+    "sass": "^1.79.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -24,22 +31,22 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
-	  "prettier": "^3.3.3",
+    "prettier": "^3.3.3",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1",
-	  "vite-plugin-svgr": "^4.2.0"
+    "vite-plugin-svgr": "^4.2.0"
   },
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	}
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
