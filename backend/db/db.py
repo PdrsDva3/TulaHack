@@ -81,3 +81,39 @@ order by ts_1;
             cursor.close()
             connection.close()
             logger.info('Database connection closed.')
+
+
+async def add_point_information(address, lat, lon, last_ts, problems, containers, ts_1, ts_2, photo_1, photo_2,
+                                other_trash, status):
+    connection = db_connection()
+    cursor = connection.cursor()
+
+    try:
+        query = sql.SQL("""SELECT id
+        FROM points
+        WHERE lat = %s and lon = %s;""")
+        cursor.execute(query, (lat, lon))
+
+        row = cursor.fetchone()
+        if row is None:
+            query = sql.SQL("""
+                        INSERT INTO points (address, lat, lon, last_ts, problems) VALUES (%s, %s, %s, %s, %s) RETURNING id;""")
+            cursor.execute(query, (address, lat, lon, last_ts, problems))
+            id = cursor.fetchone()[0]
+        else:
+            id = row[0]
+
+        query = sql.SQL("""
+            INSERT INTO information_point (id_point, containers, ts_1, ts_2, photo_1, photo_2, other_trash, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""")
+        cursor.execute(query, (id, containers, ts_1, ts_2, photo_1, photo_2, other_trash, status))
+
+        connection.commit()
+        logger.info("Created successfully")
+        return 1
+    except (Exception, psycopg2.DatabaseError) as error:
+        logger.error(error)
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+            logger.info('Database connection closed.')

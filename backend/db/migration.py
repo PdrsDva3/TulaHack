@@ -98,6 +98,9 @@ def migration_down():
             conn.close()
 
 
+
+
+
 if __name__ == "__main__":
     migration_down()
     migration_up()
