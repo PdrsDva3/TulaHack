@@ -9,17 +9,10 @@ declare module '@mui/material/styles' {
 	}
 
 	interface PaletteOptions {
-		blueGray?: PaletteOptions['primary'];
-	}
-}
-
-declare module '@mui/material/styles' {
-	interface Palette {
-		greenAccent: Palette['primary'];
-	}
-
-	interface PaletteOptions {
+		redAccent?: PaletteOptions['primary'];
+		orangeAccent?: PaletteOptions['primary'];
 		greenAccent?: PaletteOptions['primary'];
+		blueAccent?: PaletteOptions['primary'];
 	}
 }
 
@@ -28,64 +21,78 @@ export let theme = createTheme({});
 theme = createTheme({
 	palette: {
 		primary: {
-			main: '#E21A1A',
+			main: '#F45011',
 		},
 
 		secondary: {
-			main: '#e6e6e6',
-			dark: '#8e8989',
-			light: '#d9d9d9',
+			main: '#C9F1F6',
+			dark: '#989898',
+			light: '#F1FBFD',
 		},
 
-		blueGray: theme.palette.augmentColor({
+		redAccent: theme.palette.augmentColor({
 			color: {
-				main: '#687a8c',
+				main: '#FF0303',
 			},
-			name: 'blueGray',
+			name: 'redAccent',
+		}),
+
+		orangeAccent: theme.palette.augmentColor({
+			color: {
+				main: '#F47544',
+			},
+			name: 'orangeAccent',
 		}),
 
 		greenAccent: theme.palette.augmentColor({
 			color: {
-				main: '#01b456',
+				main: '#33A200',
 			},
 			name: 'greenAccent',
 		}),
 
+		blueAccent: theme.palette.augmentColor({
+			color: {
+				main: '#1976D2',
+			},
+			name: 'blueAccent',
+		}),
+
 		common: {
 			white: '#ffffff',
-			black: '#000000',
+			black: '#353535',
 		},
 	},
 
 	typography: {
 		fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
-		fontSize: 16,
+		fontSize: 10,
 
 		h1: {
 			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
-			fontSize: 42,
+			fontSize: 35,
 		},
 		h2: {
 			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
-			fontSize: 40,
+			fontSize: 22,
 		},
 		h3: {
 			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
-			fontSize: 30,
+			fontSize: 20,
 		},
 		h4: {
 			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
-			fontSize: 24,
+			fontSize: 16,
 		},
 		h5: {
 			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
-			fontSize: 20,
+			fontSize: 14,
 		},
 		h6: {
 			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
-			fontSize: 14,
+			fontSize: 12,
 		},
 	},
 
-	spacing: 10,
+	spacing: 5,
 });
