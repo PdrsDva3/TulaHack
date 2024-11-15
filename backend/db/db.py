@@ -70,6 +70,8 @@ order by ts_1;
                  "other_trash": row1[5], "status": row1[6]}
 
         logger.info("Database fetched successfully")
+        print(row)
+        print(point)
         return point
 
     except (Exception, psycopg2.DatabaseError) as error:
