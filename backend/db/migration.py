@@ -4,7 +4,7 @@
 import psycopg2
 from psycopg2 import sql
 
-from backend import config
+import config
 
 db_config = {
     'dbname': config.DB_NAME,
