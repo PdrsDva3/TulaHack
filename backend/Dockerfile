@@ -8,5 +8,5 @@ COPY ./ ./
 
 
 WORKDIR /backend
-CMD ["python", "db/migration.py/"]
+
 CMD ["python", "main.py"]
