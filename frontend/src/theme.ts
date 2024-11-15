@@ -66,7 +66,7 @@ theme = createTheme({
 
 	typography: {
 		fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
-		fontSize: 10,
+		fontSize: 15,
 
 		h1: {
 			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
