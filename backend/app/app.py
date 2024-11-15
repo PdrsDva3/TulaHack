@@ -27,7 +27,7 @@ async def get_all_points_h():
         raise HTTPException(status_code=418, detail="i am a teapot ;)")
     return all_points
 
-@app.get("/points/{id}")
+@app.get("/points/{point_id}")
 async def get_point_info(point_id: int):
     point = await get_point_by_id(point_id)
     if not point:

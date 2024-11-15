@@ -6,8 +6,7 @@ COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 COPY ./ ./
 
-WORKDIR /backend/db
-CMD ["python", "migration.py"]
 
 WORKDIR /backend
+CMD ["python", "db/migration.py/"]
 CMD ["python", "main.py"]
