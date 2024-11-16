@@ -3,7 +3,7 @@ import { PhotoCard } from './components';
 import { InfoCard } from './components';
 import { FC } from 'react';
 import Ellipse from '../../assets/svg/Ellipse.svg?react';
-import YandexMap from '../../components/YandexMap/YandexMap.tsx';
+import { YandexMap }from '../../components';
 
 export const MapPage: FC = () => {
 	return (
@@ -68,7 +68,7 @@ export const MapPage: FC = () => {
 						height: '42vw',
 					}}
 				>
-					<YandexMap></YandexMap>
+					<YandexMap center={[54.1921, 37.6156]} zoom={10}></YandexMap>
 				</Box>
 			</Grid2>
 			<Grid2 size={4}>

@@ -7,7 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DateCalendar } from '@mui/x-date-pickers';
 import { api } from '../../api/api.ts';
-import YandexMap from '../../components/YandexMap/YandexMap.tsx';
+import { YandexMap } from '../../components';
 
 export const CalendarPage: FC = () => {
 	const btnClick = async () => {
@@ -48,6 +48,7 @@ export const CalendarPage: FC = () => {
 			spacing={4}
 			sx={{
 				justifyItems: 'stretch',
+				px:"5vw"
 			}}
 		>
 			<Grid2 size={4}>
@@ -165,14 +166,16 @@ export const CalendarPage: FC = () => {
 					</LocalizationProvider>
 				</Container>
 			</Grid2>
-			<Grid2 size={8} sx={{ display: 'flex', gap: 8 }}>
+			<Grid2 size={8} sx={{display:"flex"}}>
 				<Box
 					sx={{
 						borderRadius: '10px',
 						minHeight: '70vh',
+						minWidth: '60vw',
+
 					}}
 				>
-					<YandexMap></YandexMap>
+					<YandexMap center={[54.1921, 37.6156]} zoom={10}></YandexMap>
 				</Box>
 			</Grid2>
 		</Grid2>

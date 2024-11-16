@@ -2,8 +2,8 @@ let isScriptLoaded = false;
 let ymapsLoadPromise: Promise<typeof window.ymaps> | null = null;
 
 export const loadYMaps = async (apiKey: string): Promise<typeof window.ymaps> => {
-	if (isScriptLoaded) {
-		return ymapsLoadPromise!;
+	if (isScriptLoaded  && ymapsLoadPromise) {
+		return ymapsLoadPromise;
 	}
 
 	isScriptLoaded = true;
