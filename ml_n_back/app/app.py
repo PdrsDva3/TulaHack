@@ -8,6 +8,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, get_point_by_coordinates, get_user, login_user, get_report_today
 
+import os
+import uuid
+from fastapi.responses import FileResponse
+
 app = FastAPI()
 
 origins = [
@@ -140,11 +144,7 @@ async def login_user_h(email: str, password: str):
 
 app.include_router(user_router, prefix="/user", tags=["user"])
 
-# import uuid
-# import os
-# from docx import Document
-# import httpx
-#
+
 def create_docx(data):
     doc = Document()
     doc.add_heading('Data Report Today', 0)
@@ -157,53 +157,9 @@ def create_docx(data):
     doc.save(file_path)
 
     return file_path
-#
-#
-# # Функция для отправки файла на сайт
-# async def send_file_to_site(file_path):
-#     url = "https://example.com/upload"  # URL для загрузки
-#     with open(file_path, 'rb') as f:
-#         files = {'file': ('report.docx', f)}
-#         async with httpx.AsyncClient() as client:
-#             response = await client.post(url, files=files)
-#     return response.status_code
-#
-#
-# # Функция для удаления временного файла
-# def remove_temp_file(file_path: str):
-#     try:
-#         os.remove(file_path)
-#     except Exception as e:
-#         print(f"Error deleting file {file_path}: {e}")
-#
-#
-# # Основной маршрут для генерации отчета
-# @app.get("/generate_report")
-# async def generate_report(background_tasks: BackgroundTasks, db: Session = Depends(SessionLocal)):
-#     # Получаем данные из базы
-#     data = get_data(db)
-#
-#     # Создаем файл .docx
-#     file_path = create_docx(data)
-#
-#     # Отправляем файл на сайт
-#     status_code = await send_file_to_site(file_path)
-#
-#     # Добавляем задачу на удаление файла в фон
-#     background_tasks.add_task(remove_temp_file, file_path)
-#
-#     if status_code == 200:
-#         return {"message": "Report successfully uploaded."}
-#     else:
-#         return {"message": "Failed to upload report.", "status_code": status_code}
 
 
-
-import os
-import uuid
-from fastapi.responses import FileResponse
-
-reports_router = APIRouter()
+report_router = APIRouter()
 
 class ReportToday(BaseModel):
     lat: str
@@ -223,17 +179,16 @@ async def create_file(lat, lon):
     doc.add_paragraph(f"Количество мусора вне контейнера: {data['other_trash']}")
     doc.add_paragraph(f"Статус контейнерной площадки: {data['status']}")
     unique_filename = f"{uuid.uuid4().hex}_report.docx"
-    temp_file = os.getcwd()
+    os.getcwd()
+    temp_file = os.path.join("temp")
     file_path = os.path.join(temp_file, unique_filename)
     doc.save(file_path)
     return file_path
 
 
-@reports_router.post("/today")
+@report_router.post("/today")
 async def get_today(data: ReportToday):
-    print(1)
     datas = data.dict()
-    print(1)
     file_path = await create_file(datas['lat'], datas['lon'])
     if not file_path:
         raise HTTPException(status_code=404, detail="Can not generate file")
@@ -241,19 +196,19 @@ async def get_today(data: ReportToday):
     return FileResponse(path=file_path, filename='Отчет_за_сегодня.docx', media_type='multipart/form-data')
 
 
-# class ReportPeriod(BaseModel):
-#     lat: str
-#     lon: str
-#     ts_1: str
-#     ts_2: str
-#
-#     class Config:
-#         arbitrary_types_allowed = True
-#
-#
-# @report_router.get("/period")
-# async def get_period(data: ReportPeriod):
-#     data = data.dict()
-#     db_data = await get_report_period(data["lat"], data["lon"], data["ts_1"], data["ts_2"])
+class ReportPeriod(BaseModel):
+    lat: str
+    lon: str
+    ts_1: str
+    ts_2: str
 
-app.include_router(reports_router, prefix="/report", tags=["report"])
+    class Config:
+        arbitrary_types_allowed = True
+
+
+@report_router.get("/period")
+async def get_period(data: ReportPeriod):
+    data = data.dict()
+    db_data = await get_report_period(data["lat"], data["lon"], data["ts_1"], data["ts_2"])
+
+app.include_router(report_router, prefix="/report", tags=["report"])

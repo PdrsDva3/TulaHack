@@ -163,3 +163,4 @@ cython_debug/
 myvenv/
 
 config.py
+/temp
