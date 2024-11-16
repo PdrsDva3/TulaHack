@@ -1,1 +1,1 @@
-export * from './base-photo.ts'
+export * from './base-photo.ts';

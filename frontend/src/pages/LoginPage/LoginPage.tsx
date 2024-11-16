@@ -71,12 +71,29 @@ export const LoginPage: FC = () => {
 					<img src={right_white} className="right_white box-shadow" />
 				</div>
 			</div>
-			<FormControl className="login_form box-shadow" sx={{backgroundColor: 'common.white', display:"flex", flexDirection:"column", justifyContent:"space-between", py:4}}>
+			<FormControl
+				className="login_form box-shadow"
+				sx={{
+					backgroundColor: 'common.white',
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'space-between',
+					py: 4,
+				}}
+			>
 				<Typography className="title" id="title" variant="h2" sx={{ mt: 3 }}>
 					Вход в систему
 				</Typography>
 
-				<Box sx={{display:"flex", flexDirection:"column", width:"100%", alignItems:"center", gap:5}}>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						width: '100%',
+						alignItems: 'center',
+						gap: 5,
+					}}
+				>
 					<TextField
 						id="login_user_email"
 						label="Почта"
@@ -98,7 +115,7 @@ export const LoginPage: FC = () => {
 					type="submit"
 					className="login__btn"
 					variant="contained"
-					sx={{ borderRadius: '10px', px: 5, py: 1.5}}
+					sx={{ borderRadius: '10px', px: 5, py: 1.5 }}
 				>
 					Войти
 				</Button>

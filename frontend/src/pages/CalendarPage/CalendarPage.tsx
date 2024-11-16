@@ -10,17 +10,19 @@ import { api } from '../../api/api.ts';
 // import { basePhoto } from '../../constatns';
 
 export const CalendarPage: FC = () => {
-
 	const btnClick = async () => {
-		await api.post('user/registration', {
-			email: "m2302537@edu.misis.ru",
-			password: "123qwerty",
-			name: "gandoniero",
-		}).then((res) => {
-			console.log(res);
-		}).catch(err => {
-			console.error(err)
-		})
+		await api
+			.post('user/registration', {
+				email: 'm2302537@edu.misis.ru',
+				password: '123qwerty',
+				name: 'gandoniero',
+			})
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 
 		// await api.post('point/add', {
 		// 	address: 'MOSCOW',
@@ -32,15 +34,13 @@ export const CalendarPage: FC = () => {
 		// }).catch(err => {
 		// 	console.error(err)
 		// })
-	}
+	};
 
 	// useEffect(() => {
 	// 	api.get('point/all').then((res) => {
 	// 		console.log(res);
 	// 	});
 	// }, []);
-
-
 
 	return (
 		<Grid2
@@ -92,7 +92,7 @@ export const CalendarPage: FC = () => {
 						display: 'flex',
 						gap: 2,
 					}}
-					onClick = {btnClick}
+					onClick={btnClick}
 				>
 					<img src={dowload} />
 					<Typography
@@ -170,7 +170,7 @@ export const CalendarPage: FC = () => {
 					sx={{
 						backgroundColor: 'common.black',
 						borderRadius: '10px',
-						minHeight:"70vh",
+						minHeight: '70vh',
 					}}
 				></Container>
 			</Grid2>

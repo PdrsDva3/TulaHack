@@ -12,20 +12,22 @@ export const StatisticPage: FC = () => {
 
 	return (
 		<Container>
-			<LocalizationProvider dateAdapter={AdapterDayjs}>
-				<DemoContainer components={['DatePicker', 'DatePicker']}>
-					<DatePicker
-						label="Controlled picker"
-						value={fromDate}
-						onChange={(newValue) => setFromDate(newValue)}
-					/>
-					<DatePicker
-						label="Controlled picker"
-						value={toDate}
-						onChange={(newValue) => setToDate(newValue)}
-					/>
-				</DemoContainer>
-			</LocalizationProvider>
+			<Container>
+				<LocalizationProvider dateAdapter={AdapterDayjs}>
+					<DemoContainer components={['DatePicker', 'DatePicker']}>
+						<DatePicker
+							label="Controlled picker"
+							value={fromDate}
+							onChange={(newValue) => setFromDate(newValue)}
+						/>
+						<DatePicker
+							label="Controlled picker"
+							value={toDate}
+							onChange={(newValue) => setToDate(newValue)}
+						/>
+					</DemoContainer>
+				</LocalizationProvider>
+			</Container>
 		</Container>
 	);
 };
