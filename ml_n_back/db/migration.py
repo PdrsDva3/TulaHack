@@ -30,7 +30,7 @@ def migration_up():
     lat      varchar,
     lon      varchar,
     last_ts  timestamp,
-    problems bool default false
+    problems varchar default 'no see'
 );
 
 
@@ -79,6 +79,13 @@ CREATE TABLE IF NOT EXISTS users (
             hashed_pwd VARCHAR
             );
 
+CREATE TABLE IF NOT EXISTS statistic_points
+(
+    data timestamp,
+    see int,
+    have_problem int,
+    no_see int
+);
 """)
 
         cur.execute(create)  # Выполняем запрос на создание таблицы
