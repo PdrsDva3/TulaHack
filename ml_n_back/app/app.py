@@ -1,12 +1,20 @@
 import json
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from docx import Document
 from fastapi import FastAPI, HTTPException, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, get_point_by_coordinates, get_user, login_user, get_report_today
+from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, \
+    get_point_by_coordinates, get_user, login_user, get_statistic_container, get_statistic_container_solve, \
+    get_report_in_day, add_garbage, get_garbage_information_by_id
+from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, \
+    get_point_by_coordinates, get_user, login_user, get_report_today
+
+import os
+import uuid
+from fastapi.responses import FileResponse
 
 app = FastAPI()
 
@@ -45,6 +53,13 @@ async def get_point_info(point_id: int):
         raise HTTPException(status_code=404, detail="Invalid ID")
     return point
 
+@points_router.get("/garbage/{garbage_id}")
+async def get_point_info(garbage_id: int):
+    garbage = await get_garbage_information_by_id(garbage_id)
+    if not garbage:
+        raise HTTPException(status_code=404, detail="Invalid ID")
+    return garbage
+
 
 from typing import Dict, Any
 
@@ -78,26 +93,56 @@ async def create_point(data: PointData):
     from inference import predict
 
     photo, prediction = predict(point["photo"])
-
-    out = dict()
+    translation = {
+        "Bin": "container",  # контейнер с решеткой или отверстиями
+        "Tank": "tank",  # очень большой контейнер
+        "Container": "container",  # тут и так понятно
+        "Place": "place",  # место, где стоят контейнеры
+        "garbage": "garbage",  # мусор
+        "overflow": "overflow_container",  # заполненный/переполненный контейнер
+        'Large': "large_garbage"  # гора мусора вне зоны контейнеров
+    }
+    prediction["Container"] += prediction["overf"]
+    out = {
+        "place": 0,
+        "container": 0,
+        "overflow_container": 0,
+        "tank": 0,
+        "garbage": 0,
+        "large_garbage": 0
+    }
     for k, v in prediction.items():
         if v != 0:
-            out[k] = v
+            out[translation[k]] += v
 
-    ret = await add_point_information(
-        point['address'],
-        point['lat'],
-        point['lon'],
-        point1['problems'],
-        json.dumps(out),
-        current_time,
-        photo,
-        prediction["garbage"],
-        'bad' if prediction["garbage"] else ''
-    )
+    container = dict()
+    for k, v in out.items():
+        if v != 0:
+            container[translation[k]] = v
+
+    if container["container"] == 0 and container["tank"] == 0 and container["place"] == 0:
+        ret = await add_garbage(point["address"],
+                                point["lat"],
+                                point["lon"],
+                                current_time,
+                                photo,
+                                'have' if prediction["garbage"] or prediction["large_garbage"] else 'solve')
+    else:
+        ret = await add_point_information(
+            point['address'],
+            point['lat'],
+            point['lon'],
+            point1['problems'],
+            json.dumps(container),
+            current_time,
+            photo,
+            prediction["garbage"] + prediction["Large"],
+            'bad' if prediction["garbage"] or prediction["overflow"] or prediction["Large"] else ''
+        )
     if not ret:
         raise HTTPException(status_code=418, detail="i am a teapot ;)")
     return "succes"
+
 
 app.include_router(points_router, prefix="/point", tags=["point"])
 
@@ -112,6 +157,7 @@ async def get_user_h(user_id: int):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
+
 
 class RegUsr(BaseModel):
     email: str
@@ -141,11 +187,7 @@ async def login_user_h(email: str, password: str):
 
 app.include_router(user_router, prefix="/user", tags=["user"])
 
-# import uuid
-# import os
-# from docx import Document
-# import httpx
-#
+
 def create_docx(data):
     doc = Document()
     doc.add_heading('Data Report Today', 0)
@@ -158,53 +200,10 @@ def create_docx(data):
     doc.save(file_path)
 
     return file_path
-#
-#
-# # Функция для отправки файла на сайт
-# async def send_file_to_site(file_path):
-#     url = "https://example.com/upload"  # URL для загрузки
-#     with open(file_path, 'rb') as f:
-#         files = {'file': ('report.docx', f)}
-#         async with httpx.AsyncClient() as client:
-#             response = await client.post(url, files=files)
-#     return response.status_code
-#
-#
-# # Функция для удаления временного файла
-# def remove_temp_file(file_path: str):
-#     try:
-#         os.remove(file_path)
-#     except Exception as e:
-#         print(f"Error deleting file {file_path}: {e}")
-#
-#
-# # Основной маршрут для генерации отчета
-# @app.get("/generate_report")
-# async def generate_report(background_tasks: BackgroundTasks, db: Session = Depends(SessionLocal)):
-#     # Получаем данные из базы
-#     data = get_data(db)
-#
-#     # Создаем файл .docx
-#     file_path = create_docx(data)
-#
-#     # Отправляем файл на сайт
-#     status_code = await send_file_to_site(file_path)
-#
-#     # Добавляем задачу на удаление файла в фон
-#     background_tasks.add_task(remove_temp_file, file_path)
-#
-#     if status_code == 200:
-#         return {"message": "Report successfully uploaded."}
-#     else:
-#         return {"message": "Failed to upload report.", "status_code": status_code}
 
 
+report_router = APIRouter()
 
-import os
-import uuid
-from fastapi.responses import FileResponse
-
-reports_router = APIRouter()
 
 class ReportToday(BaseModel):
     lat: str
@@ -213,28 +212,51 @@ class ReportToday(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
+
+import base64
+from io import BytesIO
+
+
+def decode_base64_to_image(base64_string):
+    return base64.b64decode(base64_string)
+
+
+def add_image_to_docx(doc, base64_image_string):
+    image_bytes = decode_base64_to_image(base64_image_string)
+
+    # Используем BytesIO, чтобы работать с байтами как с файлом
+    image_stream = BytesIO(image_bytes)
+    from docx.shared import Inches
+    # Добавляем картинку в документ
+    doc.add_picture(image_stream, width=Inches(2.3), height=Inches(2.3))
+
+
 async def create_file(lat, lon):
     data = await get_report_today(lat, lon)
     doc = Document()
     # Добавляем заголовок
-    doc.add_heading('Отчет по контейнерной площадке', 0)
-    # Добавляем информацию в документ
-    doc.add_paragraph(f"Контейнерная площадка: {data['containers']['Place']}")
+    doc.add_heading(f'Отчет по контейнерной площадке ({lat},  {lon})', 0)
+    doc.add_paragraph(f"Фото до ")
+    add_image_to_docx(doc, data["photo_1"])
+    if data["photo_2"]:
+        doc.add_paragraph(f"Фото после ")
+        add_image_to_docx(doc, data["photo_2"])
+    doc.add_paragraph(f"Адрес контейнерной площадки: {data['address']}")
+    doc.add_paragraph(f"Контейнерная площадка включает: {data['containers']['Place']}")
     doc.add_paragraph(f"Количество контейнеров на площадке: {data['containers']['Container']}")
     doc.add_paragraph(f"Количество мусора вне контейнера: {data['other_trash']}")
     doc.add_paragraph(f"Статус контейнерной площадки: {data['status']}")
     unique_filename = f"{uuid.uuid4().hex}_report.docx"
-    temp_file = os.getcwd()
+    os.getcwd()
+    temp_file = os.path.join("temp")
     file_path = os.path.join(temp_file, unique_filename)
     doc.save(file_path)
     return file_path
 
 
-@reports_router.post("/today")
+@report_router.post("/today")
 async def get_today(data: ReportToday):
-    print(1)
     datas = data.dict()
-    print(1)
     file_path = await create_file(datas['lat'], datas['lon'])
     if not file_path:
         raise HTTPException(status_code=404, detail="Can not generate file")
@@ -242,19 +264,110 @@ async def get_today(data: ReportToday):
     return FileResponse(path=file_path, filename='Отчет_за_сегодня.docx', media_type='multipart/form-data')
 
 
-# class ReportPeriod(BaseModel):
-#     lat: str
-#     lon: str
-#     ts_1: str
-#     ts_2: str
-#
-#     class Config:
-#         arbitrary_types_allowed = True
-#
-#
-# @report_router.get("/period")
-# async def get_period(data: ReportPeriod):
-#     data = data.dict()
-#     db_data = await get_report_period(data["lat"], data["lon"], data["ts_1"], data["ts_2"])
+class ReportPeriod(BaseModel):
+    lat: str
+    lon: str
+    ts_1: str
+    ts_2: str
 
-app.include_router(reports_router, prefix="/report", tags=["report"])
+    class Config:
+        arbitrary_types_allowed = True
+
+
+@report_router.post("/period")
+async def get_period(data: ReportPeriod):
+    data = data.dict()
+    doc = Document()
+    # Добавляем заголовок
+    doc.add_heading(f'Отчет по контейнерной площадке ({data["lat"]},  {data["lon"]})', 0)
+    ts1 = (datetime.strptime(data["ts_1"], "%Y-%m-%d %H:%M:%S")).date()
+    ts2 = (datetime.strptime(data["ts_2"], "%Y-%m-%d %H:%M:%S")).date()
+
+    while ts1 != ts2 + timedelta(days=1):
+        doc.add_heading(f'Отчет за {ts1}', 1)
+        db_data = await get_report_in_day(data["lat"], data["lon"], ts1)
+
+        doc.add_paragraph(f"Фото до ")
+        add_image_to_docx(doc, db_data["photo_1"])
+        if db_data["photo_2"]:
+            doc.add_paragraph(f"Фото после ")
+            add_image_to_docx(doc, db_data["photo_2"])
+        doc.add_paragraph(f"Адрес контейнерной площадки: {db_data['address']}")
+        doc.add_paragraph(f"Контейнерная площадка включает: {db_data['containers']['Place']}")
+        doc.add_paragraph(f"Количество контейнеров на площадке: {db_data['containers']['Container']}")
+        doc.add_paragraph(f"Количество мусора вне контейнера: {db_data['other_trash']}")
+        doc.add_paragraph(f"Статус контейнерной площадки: {db_data['status']}")
+
+        ts1 += timedelta(days=1)
+    unique_filename = f"{uuid.uuid4().hex}_report.docx"
+    os.getcwd()
+    temp_file = os.path.join("temp")
+    file_path = os.path.join(temp_file, unique_filename)
+    doc.save(file_path)
+    if not file_path:
+        raise HTTPException(status_code=404, detail="Can not generate file")
+
+    return FileResponse(path=file_path, filename='Отчет.docx', media_type='multipart/form-data')
+
+
+app.include_router(report_router, prefix="/report", tags=["report"])
+
+# ======================statistic
+
+statistic_router = APIRouter()
+app.include_router(statistic_router, prefix="/statistic", tags=["statistic"])
+
+
+class StatisticData(BaseModel):
+    ts_1: str
+    ts_2: str
+
+    class Config:
+        arbitrary_types_allowed = True
+
+
+@statistic_router.post("container")
+async def get_statistic(data: StatisticData):
+    data = data.dict()
+    ts1 = (datetime.strptime(data["ts_1"], "%Y-%m-%d %H:%M:%S")).date()
+
+    ts2 = (datetime.strptime(data["ts_2"], "%Y-%m-%d %H:%M:%S")).date()
+
+    statics = {
+        "see": 0,
+        "bad": 0,
+        "no_see": 0,
+    }
+
+    while ts1 != ts2 + timedelta(days=1):
+        static = await get_statistic_container(ts1)
+        statics["see"] += static["see"]
+        statics["bad"] += static["bad"]
+        statics["no_see"] += static["no_see"]
+        ts1 += timedelta(days=1)
+
+    return statics
+
+
+@statistic_router.post("solve")
+async def get_statistic(data: StatisticData):
+    data = data.dict()
+    ts1 = (datetime.strptime(data["ts_1"], "%Y-%m-%d %H:%M:%S")).date()
+
+    ts2 = (datetime.strptime(data["ts_2"], "%Y-%m-%d %H:%M:%S")).date()
+
+    statics = {
+        "error": 0,
+        "solve": 0,
+    }
+
+    while ts1 != ts2 + timedelta(days=1):
+        static = await get_statistic_container_solve(ts1)
+        statics["error"] += static["error"]
+        statics["solve"] += static["solve"]
+        ts1 += timedelta(days=1)
+
+    return statics
+
+
+app.include_router(statistic_router, prefix="/statistic", tags=["statistic"])

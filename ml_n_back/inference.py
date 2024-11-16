@@ -4,24 +4,19 @@ import cv2
 import base64
 import os
 
-
-
-model = YOLO("/ml_n_back/best.onnx")
+model = YOLO("C:/Users/aria_/PycharmProjects/TulaHack/ml_n_back/best.onnx")
 
 objects = {
     "Bin": 0,  # контейнер с решеткой или отверстиями
     "Tank": 0,  # очень большой контейнер
     "Container": 0,  # тут и так понятно
-    "Place": 0,  # место где стоят контейнеры
+    "Place": 0,  # место, где стоят контейнеры
     "garbage": 0,  # мусор
-    "garbage_bin": 0,  # это не нужно но если что - это тоже контейнер
     "overflow": 0,  # заполненный/переполненный контейнер
     'Large': 0  # гора мусора вне зоны контейнеров
 }
 
-label_dict = {0: 'Bin', 1: 'Container', 2: 'Large', 3: 'Place', 4: 'Tank', 5: 'garbage', 6: 'garbage_bin',
-              7: 'overflow'}
-
+label_dict = {0: 'Bin', 1: 'Container', 2: 'Large', 3: 'Place', 4: 'Tank', 5: 'garbage', 6: 'overflow'}
 
 
 def count_labels(array):
@@ -34,6 +29,7 @@ def count_labels(array):
             else:
                 result[label] = 1
     return result
+
 
 def predict(base64_img):
     image_data = base64.b64decode(base64_img)
@@ -58,4 +54,3 @@ def predict(base64_img):
     _, buffer = cv2.imencode('.jpg', annotated_image)
     base64_frame = base64.b64encode(buffer).decode('utf-8')
     return base64_frame, count
-
