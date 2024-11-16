@@ -30,7 +30,7 @@ def migration_up():
     lat      varchar,
     lon      varchar,
     last_ts  timestamp,
-    problems varchar default 'no see'
+    problems varchar default 'no_see'
 );
 
 
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS information_point
     photo_1     varchar,
     photo_2     varchar,
     other_trash int     default 0,
-    status      varchar default ''
+    status      varchar default 'no_see'
 );
 
 CREATE TABLE IF NOT EXISTS report
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS garbage
     ts_2    timestamp,
     photo_1 varchar,
     photo_2 varchar,
-    status  varchar default 'не убрана'
+    status  varchar default 'have'
 );
 
 CREATE TABLE IF NOT EXISTS users (
