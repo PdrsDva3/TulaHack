@@ -4,7 +4,7 @@ import cv2
 import base64
 import os
 
-model = YOLO("C:/Users/aria_/PycharmProjects/TulaHack/ml_n_back/best.onnx")
+model = YOLO("best.onnx")
 
 objects = {
     "Bin": 0,  # контейнер с решеткой или отверстиями
