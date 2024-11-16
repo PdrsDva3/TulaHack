@@ -267,3 +267,42 @@ async def login_user(login, password):
             cursor.close()
             connection.close()
             logger.info('Database connection closed.')
+
+
+async def get_report_today(lat, lon):
+    connection = db_connection()
+    cursor = connection.cursor()
+
+    try:
+        get_id_ts_query = sql.SQL("""
+                SELECT id, last_ts from points
+                WHERE lat=%s and lon=%s;
+                """)
+        cursor.execute(get_id_ts_query, (lat, lon))
+
+        row = cursor.fetchone()
+
+        point_id = row[0]
+        last_ts = row[1]
+
+        get_last_data = sql.SQL("""
+                SELECT containers, other_trash, status from information_point
+                WHERE id_point=%s and (ts_1=%s or ts_2=%s);
+        """)
+        cursor.execute(get_last_data, (point_id, last_ts, last_ts, ))
+
+        data_row = cursor.fetchone()
+
+        report_data = {"containers": data_row[0], "other_trash": data_row[1], "status": data_row[2]}
+
+        return report_data
+
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        logger.error(error)
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+            logger.info('Database connection closed.')
+
