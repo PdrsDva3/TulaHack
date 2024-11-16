@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write ./src",
-    "codegen": "npx @openapitools/openapi-generator-cli generate -i .\\src\\assets\\swagger.codegen.json -g typescript-axios -o .\\src\\api\\"
+    "codegen": "npx openapi-typescript-codegen --input .\\\\src\\\\assets\\\\swagger.codegen.json --output .\\\\src\\\\api\\\\"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
