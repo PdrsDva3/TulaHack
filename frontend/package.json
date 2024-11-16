@@ -19,6 +19,7 @@
     "@mui/icons-material": "^6.1.7",
     "@mui/material": "^6.1.7",
     "@mui/x-date-pickers": "^7.22.2",
+    "@pbe/react-yandex-maps": "^1.2.5",
     "axios": "^1.7.7",
     "base-64": "^1.0.0",
     "dayjs": "^1.11.13",

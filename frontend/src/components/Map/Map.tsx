@@ -1,22 +1,10 @@
-// import React from "react";
-// import {
-// 	YMap,
-// 	YMapDefaultSchemeLayer,
-// 	YMapDefaultFeaturesLayer
-// 	// ...other components
-// } from "ymapv3-components";
-// import { features, LOCATION } from './helpers'
-//
-// export const Map = () => {
-// 	return (
-// 		<YMapComponentsProvider apiKey={process.env.REACT_APP_YMAP_KEY}>
-// 			<YMap location={location}>
-// 				<YMapDefaultSchemeLayer />
-// 				<YMapDefaultFeaturesLayer />
-// 				<YMapDefaultMarker
-// 					coordinates={LOCATION.coordinates}
-// 				/>
-// 			</YMap>
-// 		</YMapComponentsProvider>
-// 	);
-// }
+import { Map, YMaps } from '@pbe/react-yandex-maps';
+import { Box } from '@mui/material';
+
+export const MyMap = () => (
+	<Box sx={{ display: 'flex', alignItems: 'center', justifyContent:"center", height: '100%', overflow:'hidden', borderRadius:"20px"  }}>
+		<YMaps>
+			<Map style={{height:"100%", width:"100%"}} defaultState={{ center: [55.75, 37.57], zoom: 9 }} />
+		</YMaps>
+	</Box>
+);

@@ -9,6 +9,14 @@ import { DateCalendar } from '@mui/x-date-pickers';
 import { api } from '../../api/api.ts';
 // import { basePhoto } from '../../constatns';
 
+// import {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker, reactify} from '../../utils';
+// import type {YMapLocationRequest} from '@yandex/ymaps3-types';
+
+// const LOCATION: YMapLocationRequest = {
+// 	center: [37.588144, 55.733842],
+// 	zoom: 9
+// };
+
 export const CalendarPage: FC = () => {
 	const btnClick = async () => {
 		await api
@@ -166,13 +174,23 @@ export const CalendarPage: FC = () => {
 				</Container>
 			</Grid2>
 			<Grid2 size={8} sx={{ display: 'flex', gap: 8 }}>
-				<Container
+				<Box
 					sx={{
-						backgroundColor: 'common.black',
 						borderRadius: '10px',
 						minHeight: '70vh',
 					}}
-				></Container>
+				>
+					{/*<YMap location={reactify.useDefault(LOCATION)}>*/}
+					{/*	<YMapDefaultSchemeLayer />*/}
+					{/*	<YMapDefaultFeaturesLayer />*/}
+
+					{/*	<YMapMarker coordinates={reactify.useDefault([37.588144, 55.733842])} draggable={true}>*/}
+					{/*		<section>*/}
+					{/*			<h1>You can drag this header</h1>*/}
+					{/*		</section>*/}
+					{/*	</YMapMarker>*/}
+					{/*</YMap>*/}
+				</Box>
 			</Grid2>
 		</Grid2>
 	);
