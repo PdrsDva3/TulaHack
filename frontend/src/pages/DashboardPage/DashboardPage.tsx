@@ -6,7 +6,14 @@ import { StatisticCard } from './components';
 
 export const DashboardPage: FC = () => {
 	return (
-		<Container sx={{ display: 'flex', gap: 8, alignItems:"center"}}>
+		<Container
+			sx={{
+				display: 'flex',
+				gap: 8,
+				alignItems: 'center',
+				justifyContent: 'space-between',
+			}}
+		>
 			<CalendarCard />
 			<MonitoringCard />
 			<StatisticCard />

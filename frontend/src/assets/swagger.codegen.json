@@ -1,1 +1,112 @@
-{"openapi":"3.1.0","info":{"title":"FastAPI","version":"0.1.0"},"paths":{"/points/all":{"get":{"summary":"Get All Points H","operationId":"get_all_points_h_points_all_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/points/{point_id}":{"get":{"summary":"Get Point Info","operationId":"get_point_info_points__point_id__get","parameters":[{"name":"point_id","in":"path","required":true,"schema":{"type":"integer","title":"Point Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/point":{"post":{"summary":"Create Point","operationId":"create_point_point_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/PointData"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}}},"components":{"schemas":{"HTTPValidationError":{"properties":{"detail":{"items":{"$ref":"#/components/schemas/ValidationError"},"type":"array","title":"Detail"}},"type":"object","title":"HTTPValidationError"},"PointData":{"properties":{"address":{"type":"string","title":"Address"},"lat":{"type":"string","title":"Lat"},"lon":{"type":"string","title":"Lon"},"photo":{"type":"string","title":"Photo"}},"type":"object","required":["address","lat","lon","photo"],"title":"PointData"},"ValidationError":{"properties":{"loc":{"items":{"anyOf":[{"type":"string"},{"type":"integer"}]},"type":"array","title":"Location"},"msg":{"type":"string","title":"Message"},"type":{"type":"string","title":"Error Type"}},"type":"object","required":["loc","msg","type"],"title":"ValidationError"}}}}
+{
+	"openapi": "3.1.0",
+	"info": { "title": "FastAPI", "version": "0.1.0" },
+	"paths": {
+		"/points/all": {
+			"get": {
+				"summary": "Get All Points H",
+				"operationId": "get_all_points_h_points_all_get",
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					}
+				}
+			}
+		},
+		"/points/{point_id}": {
+			"get": {
+				"summary": "Get Point Info",
+				"operationId": "get_point_info_points__point_id__get",
+				"parameters": [
+					{
+						"name": "point_id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "integer", "title": "Point Id" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/point": {
+			"post": {
+				"summary": "Create Point",
+				"operationId": "create_point_point_post",
+				"requestBody": {
+					"content": {
+						"application/json": { "schema": { "$ref": "#/components/schemas/PointData" } }
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"HTTPValidationError": {
+				"properties": {
+					"detail": {
+						"items": { "$ref": "#/components/schemas/ValidationError" },
+						"type": "array",
+						"title": "Detail"
+					}
+				},
+				"type": "object",
+				"title": "HTTPValidationError"
+			},
+			"PointData": {
+				"properties": {
+					"address": { "type": "string", "title": "Address" },
+					"lat": { "type": "string", "title": "Lat" },
+					"lon": { "type": "string", "title": "Lon" },
+					"photo": { "type": "string", "title": "Photo" }
+				},
+				"type": "object",
+				"required": ["address", "lat", "lon", "photo"],
+				"title": "PointData"
+			},
+			"ValidationError": {
+				"properties": {
+					"loc": {
+						"items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+						"type": "array",
+						"title": "Location"
+					},
+					"msg": { "type": "string", "title": "Message" },
+					"type": { "type": "string", "title": "Error Type" }
+				},
+				"type": "object",
+				"required": ["loc", "msg", "type"],
+				"title": "ValidationError"
+			}
+		}
+	}
+}
