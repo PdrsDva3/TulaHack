@@ -26,15 +26,12 @@ export const Header: FC = () => {
 			</Button>
 
 			<Toolbar sx={{ display: 'flex', gap: 10 }}>
-				<NavLink to="/">
+				<NavLink to="/calendar">
 					<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
 						<SvgIcon fontSize="medium">
 							<CalendarMonthOutlinedIcon sx={{ color: 'secondary.dark' }} />
 						</SvgIcon>
-						<Typography
-							variant="h3"
-							sx={{ color: 'secondary.dark', textDecoration: 'none' }}
-						>
+						<Typography variant="h3" sx={{ color: 'secondary.dark' }}>
 							Календарь отчетов
 						</Typography>
 					</Box>
@@ -51,7 +48,7 @@ export const Header: FC = () => {
 					</Box>
 				</NavLink>
 
-				<NavLink to="/">
+				<NavLink to="/statistic">
 					<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
 						<SvgIcon fontSize="medium">
 							<LeaderboardOutlined sx={{ color: 'secondary.dark' }} />

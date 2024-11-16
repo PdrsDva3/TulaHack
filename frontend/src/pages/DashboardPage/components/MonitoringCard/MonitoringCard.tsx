@@ -19,6 +19,7 @@ export const MonitoringCard = () => {
 				minWidth: '320px',
 				alignItems: 'center',
 				justifyContent: 'space-between',
+				boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)',
 				py: 2,
 				gap: 2,
 			}}

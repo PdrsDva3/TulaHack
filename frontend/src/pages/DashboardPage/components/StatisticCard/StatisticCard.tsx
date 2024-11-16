@@ -19,6 +19,7 @@ export const StatisticCard = () => {
 				minWidth: '320px',
 				alignItems: 'center',
 				justifyContent: 'space-between',
+				boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)',
 				py: 2,
 				gap: 2,
 			}}
@@ -33,7 +34,7 @@ export const StatisticCard = () => {
 					alignItems: 'center',
 					cursor: 'pointer',
 				}}
-				onClick={() => navigate('/statistics')}
+				onClick={() => navigate('/statistic')}
 			>
 				<Box
 					sx={{
