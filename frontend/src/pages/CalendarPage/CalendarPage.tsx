@@ -1,9 +1,47 @@
-import { Button, Container, Grid2, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, Grid2, Typography } from '@mui/material';
 import { FC } from 'react';
-import { CalendarCard } from '../DashboardPage/components';
+// import { useEffect } from 'react';
 import dowload from '../../assets/svg/dowload.svg';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DateCalendar } from '@mui/x-date-pickers';
+import { api } from '../../api/api.ts';
+// import { basePhoto } from '../../constatns';
 
 export const CalendarPage: FC = () => {
+
+	const btnClick = async () => {
+		await api.post('user/registration', {
+			email: "m2302537@edu.misis.ru",
+			password: "123qwerty",
+			name: "gandoniero",
+		}).then((res) => {
+			console.log(res);
+		}).catch(err => {
+			console.error(err)
+		})
+
+		// await api.post('point/add', {
+		// 	address: 'MOSCOW',
+		// 	lat: "121212.123",
+		// 	lon: "121422.123",
+		// 	photo: basePhoto,
+		// }).then((res) => {
+		// 	console.log(res);
+		// }).catch(err => {
+		// 	console.error(err)
+		// })
+	}
+
+	// useEffect(() => {
+	// 	api.get('point/all').then((res) => {
+	// 		console.log(res);
+	// 	});
+	// }, []);
+
+
+
 	return (
 		<Grid2
 			container
@@ -54,6 +92,7 @@ export const CalendarPage: FC = () => {
 						display: 'flex',
 						gap: 2,
 					}}
+					onClick = {btnClick}
 				>
 					<img src={dowload} />
 					<Typography
@@ -72,13 +111,66 @@ export const CalendarPage: FC = () => {
 				size={4}
 				sx={{ display: 'flex', gap: 8, alignItems: 'center', justifyContent: 'center' }}
 			>
-				<CalendarCard />
+				<Container
+					sx={{
+						m: 0,
+						display: 'flex',
+						flexDirection: 'column',
+						backgroundColor: 'common.white',
+						borderRadius: '20px',
+						width: '27.778vw',
+						minWidth: '320px',
+						maxHeight: '410px',
+						alignItems: 'center',
+						justifyContent: 'space-between',
+						boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)',
+						py: 2,
+					}}
+				>
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							width: 1,
+							gap: 4,
+							justifyContent: 'space-between',
+							alignItems: 'center',
+							cursor: 'pointer',
+						}}
+					>
+						<Box
+							sx={{
+								display: 'flex',
+								width: 1,
+								gap: 4,
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}
+						>
+							<Typography variant="h3" color="common.black">
+								Календарь отчетов
+							</Typography>
+						</Box>
+						<Divider variant="middle" sx={{ width: 1, color: 'primary' }} />
+					</Box>
+					<LocalizationProvider dateAdapter={AdapterDayjs}>
+						<DemoContainer components={['DateCalendar']}>
+							<DateCalendar
+								// value={selectedDate}
+								// onChange={handleDateChange}
+								views={['year', 'month', 'day']}
+								sx={{ color: 'primary', fontVariant: 'h2' }}
+							/>
+						</DemoContainer>
+					</LocalizationProvider>
+				</Container>
 			</Grid2>
 			<Grid2 size={8} sx={{ display: 'flex', gap: 8 }}>
 				<Container
 					sx={{
 						backgroundColor: 'common.black',
 						borderRadius: '10px',
+						minHeight:"70vh",
 					}}
 				></Container>
 			</Grid2>

@@ -65,8 +65,11 @@ export const Header: FC = () => {
 				sx={{ color: 'common.black', gap: 2 }}
 				onClick={() => navigate('/login')}
 			>
-				<LogOut />
-				<Typography variant="h4" sx={{ color: 'common.black' }}>
+				<LogOut style={{ width: '25px', height: '25px' }} />
+				<Typography
+					variant="h3"
+					sx={{ color: 'common.black', textTransform: 'none', fontWeight: 500 }}
+				>
 					Выйти
 				</Typography>
 			</Button>

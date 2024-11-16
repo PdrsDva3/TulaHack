@@ -7,7 +7,6 @@ export const PhotoCard = () => {
 	return (
 		<Container
 			sx={{
-				width: '28.472vw',
 				backgroundColor: 'common.white',
 				borderRadius: '20px',
 				gap: 2,

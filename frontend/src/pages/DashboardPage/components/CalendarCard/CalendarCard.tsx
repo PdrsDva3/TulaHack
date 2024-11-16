@@ -4,18 +4,10 @@ import { DateCalendar } from '@mui/x-date-pickers';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { api } from '../../../../api/api.ts';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const CalendarCard = () => {
 	const navigate = useNavigate();
-	useEffect(() => {
-		api.get('points/all').then((res) => {
-			console.log(res);
-		});
-	}, []);
-
 	return (
 		<Container
 			sx={{

@@ -5,16 +5,12 @@ import { FC } from 'react';
 
 export const MapPage: FC = () => {
 	return (
-		<Grid2
-			container
-			spacing={4}
-			sx={{ my: 9, display: 'flex', justifyContent: 'center' }}
-		>
-			<Grid2 size={6}>
+		<Grid2 container spacing={4} sx={{ width: '100vw', px: '4.167vw' }}>
+			<Grid2 size={8}>
 				<Container
 					sx={{
 						backgroundColor: 'secondary.dark',
-						height: '42vw',
+						height: '100%',
 						borderRadius: '10px',
 					}}
 				>

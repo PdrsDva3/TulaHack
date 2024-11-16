@@ -22,7 +22,7 @@ import six from '../../assets/svg/6.svg';
 import seven from '../../assets/svg/7.svg';
 import eight from '../../assets/svg/8.svg';
 import nine from '../../assets/svg/9.svg';
-import { Button, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
 import './LoginPage.scss';
 
 export const LoginPage: FC = () => {
@@ -43,7 +43,7 @@ export const LoginPage: FC = () => {
 					<img src={right_orange} className="right_orange" />
 					<img src={right_white_house} className="right_white_house" />
 					<img src={right_white_window} className="right_white_window" />
-					<img src={right_white} className="right_white" />
+					<img src={right_white} className="right_white box-shadow" />
 				</div>
 				<div className="line_wrap">
 					<img src={one} className="one" />
@@ -68,39 +68,41 @@ export const LoginPage: FC = () => {
 					<img src={right_orange} className="right_orange" />
 					<img src={right_white_house} className="right_white_house" />
 					<img src={right_white_window} className="right_white_window" />
-					<img src={right_white} className="right_white" />
+					<img src={right_white} className="right_white box-shadow" />
 				</div>
 			</div>
-			<form className="login_form">
-				<Typography className="title" id="title" variant="h3" sx={{ mt: 3 }}>
+			<FormControl className="login_form box-shadow" sx={{backgroundColor: 'common.white', display:"flex", flexDirection:"column", justifyContent:"space-between", py:4}}>
+				<Typography className="title" id="title" variant="h2" sx={{ mt: 3 }}>
 					Вход в систему
 				</Typography>
 
-				<TextField
-					id="login_user_email"
-					label="Почта"
-					sx={[
-						{ color: 'secondary.main', width: '0.9', backgroundColor: 'common.white' },
-						{ '&:autofill': { backgroundColor: 'common.white' } },
-					]}
-				/>
+				<Box sx={{display:"flex", flexDirection:"column", width:"100%", alignItems:"center", gap:5}}>
+					<TextField
+						id="login_user_email"
+						label="Почта"
+						sx={[
+							{ color: 'secondary.main', width: '0.9', backgroundColor: 'common.white' },
+							{ '&:autofill': { backgroundColor: 'common.white' } },
+						]}
+					/>
 
-				<TextField
-					id="login_user_password"
-					label="Пароль"
-					sx={{ color: 'secondary.main', width: '0.9' }}
-					type="password"
-					name="password"
-				/>
+					<TextField
+						id="login_user_password"
+						label="Пароль"
+						sx={{ color: 'secondary.main', width: '0.9' }}
+						type="password"
+						name="password"
+					/>
+				</Box>
 				<Button
 					type="submit"
 					className="login__btn"
 					variant="contained"
-					sx={{ borderRadius: '10px', px: 5, py: 1.5, mt: 'auto', mb: 3 }}
+					sx={{ borderRadius: '10px', px: 5, py: 1.5}}
 				>
 					Войти
 				</Button>
-			</form>
+			</FormControl>
 		</section>
 	);
 };
