@@ -186,6 +186,7 @@ class LogUsr(BaseModel):
 
 @user_router.post("/login")
 async def login_user_h(data: LogUsr):
+    data = data.dict()
     user_id = await login_user(data["email"], data["password"])
     if user_id is None:
         raise HTTPException(status_code=404, detail="Invalid login or password")
