@@ -102,7 +102,7 @@ async def create_point(data: PointData):
         "overflow": "overflow_container",  # заполненный/переполненный контейнер
         'Large': "large_garbage"  # гора мусора вне зоны контейнеров
     }
-    prediction["Container"] += prediction["overf"]
+    prediction["Container"] += prediction["overflow"]
     out = {
         "place": 0,
         "container": 0,
