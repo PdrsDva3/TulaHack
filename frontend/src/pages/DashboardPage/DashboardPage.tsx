@@ -14,9 +14,9 @@ export const DashboardPage: FC = () => {
 				justifyContent: 'space-between',
 			}}
 		>
-			<CalendarCard />
 			<MonitoringCard />
 			<StatisticCard />
+			<CalendarCard />
 		</Container>
 	);
 };

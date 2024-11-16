@@ -29,7 +29,7 @@ export const LoginPage: FC = () => {
 	return (
 		<section className="login">
 			<div className="main_wrapper">
-				<div>
+				{/* <div>
 					<img src={left_grey_house} className="left_grey_house" />
 					<img src={left_white_house} className="left_white_house" />
 					<img src={left_grey_window} className="left_grey_window" />
@@ -44,7 +44,7 @@ export const LoginPage: FC = () => {
 					<img src={right_white_house} className="right_white_house" />
 					<img src={right_white_window} className="right_white_window" />
 					<img src={right_white} className="right_white" />
-				</div>
+				</div> */}
 				<div className="line_wrap">
 					<img src={one} className="one" />
 					<img src={two} className="two" />
