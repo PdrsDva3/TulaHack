@@ -13,7 +13,8 @@ export const PhotoCard = () => {
 				gap: 2,
 				display: 'flex',
 				flexDirection: 'column',
-				pb: 3,
+				py: 2,
+				boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)'
 			}}
 		>
 			<Box

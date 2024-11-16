@@ -13,6 +13,15 @@ import right_orange from '../../assets/svg/right_orange.svg';
 import right_white_house from '../../assets/svg/right_white_house.svg';
 import right_white_window from '../../assets/svg/right_white_window.svg';
 import right_white from '../../assets/svg/right_white.svg';
+import one from '../../assets/svg/1.svg'
+import two from '../../assets/svg/2.svg'
+import three from '../../assets/svg/3.svg'
+import four from '../../assets/svg/4.svg'
+import five from '../../assets/svg/5.svg'
+import six from '../../assets/svg/6.svg'
+import seven from '../../assets/svg/7.svg'
+import eight from '../../assets/svg/8.svg'
+import nine from '../../assets/svg/9.svg'
 import { Button, TextField, Typography } from '@mui/material';
 import './LoginPage.scss'
 
@@ -36,7 +45,17 @@ export const LoginPage: FC = () => {
 					<img src={right_white_house} className='right_white_house'/>
 					<img src={right_white_window} className='right_white_window'/>
 					<img src={right_white} className='right_white'/>
-
+				</div>
+				<div className='line_wrap'>
+					<img src={one} className='one'/>
+					<img src={two} className='two'/>
+					<img src={three} className='three'/>
+					<img src={four} className='four'/>
+					<img src={five} className='five'/>
+					<img src={six} className='six'/>
+					<img src={seven} className='seven'/>
+					<img src={eight} className='eight'/>
+					<img src={nine}className='nine'/>
 				</div>
 			</div>
 			<form className="login_form" >

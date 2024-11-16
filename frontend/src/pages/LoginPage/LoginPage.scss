@@ -71,12 +71,14 @@
 	position: absolute;
 	right: 23%;
 	bottom: 30%;
+	z-index: 10;
 }
 
 .line1 {
 	position: absolute;
 	right: 24%;
 	bottom: 27%;
+	z-index: 10;
 }
 
 .right_grey_house {
@@ -105,6 +107,7 @@
 	position: absolute;
 	bottom: 0;
 	right: 25%;
+	z-index: 60;
 }
 
 .right_white_window {
@@ -120,3 +123,29 @@
 	bottom: 0;
 	right: 35%;
 }
+
+
+.line_wrap {
+	position: absolute;
+	top: 10%;
+	display: flex;
+	align-items:  center;
+	flex-direction: column;
+
+	z-index: 3;
+	animation-duration: 1200ms;
+	animation-name: line_wrap;
+}
+
+@keyframes line_wrap {
+	from {
+		width: 100px;
+		opacity: 0;
+	}
+	to{
+		width: 100%;
+	}
+}
+
+
+

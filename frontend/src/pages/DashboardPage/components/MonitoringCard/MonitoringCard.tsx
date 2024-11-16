@@ -14,6 +14,7 @@ export const MonitoringCard = () => {
 				width: '27.778vw',
 				alignItems: 'center',
 				justifyContent: 'space-between',
+				boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)'
 			}}
 		>
 			<Box>

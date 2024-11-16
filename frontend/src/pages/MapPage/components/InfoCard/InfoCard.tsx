@@ -4,7 +4,17 @@ import { DowloadButton } from '../../../../components/DowloadButton/DowloadButto
 export const InfoCard = () => {
 	return (
 		<Container
-			sx={{ display: 'flex', flexDirection: 'column', width: '28.472vw', gap: 2 }}
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				width: '28.472vw',
+				gap: 2,
+				backgroundColor:"common.white",
+				borderRadius:"20px",
+				my:2,
+				py:3,
+				boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)'
+			}}
 		>
 			<Box sx={{ display: 'flex', gap: 9 }}>
 				<Chip
@@ -68,7 +78,7 @@ export const InfoCard = () => {
 					<Typography variant="h6">статус</Typography>
 				</Box>
 				<Divider variant="middle" sx={{ width: '25vw', color: 'primary', py: 1 }} />
-				<Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+				<Box sx={{ display: 'flex', justifyContent: 'space-around', pl:4 }}>
 					<Typography variant="h6" color="secondary.dark">
 						5
 					</Typography>

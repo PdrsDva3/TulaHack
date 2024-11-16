@@ -22,7 +22,7 @@ export const Header: FC = () => {
 		<Toolbar
 			sx={{display:'flex', gap:10}}
 		>
-			<NavLink to="/" >
+			<NavLink to="/calendar" >
 				<Box
 					sx={{display:'flex', gap:4, alignItems:'center'}}
 				>
@@ -54,7 +54,7 @@ export const Header: FC = () => {
 				</Box>
 			</NavLink>
 
-			<NavLink to='/'>
+			<NavLink to='/statistic'>
 				<Box
 					sx={{display:'flex', gap:4, alignItems:'center'}}
 				>
