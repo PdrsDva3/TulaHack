@@ -94,13 +94,13 @@ async def create_point(data: PointData):
 
     photo, prediction = predict(point["photo"])
     translation = {
-        "Bin": "container",  # контейнер с решеткой или отверстиями
-        "Tank": "tank",  # очень большой контейнер
-        "Container": "container",  # тут и так понятно
-        "Place": "place",  # место, где стоят контейнеры
+        "bin": "container",  # контейнер с решеткой или отверстиями
+        "tank": "tank",  # очень большой контейнер
+        "container": "container",  # тут и так понятно
+        "place": "place",  # место, где стоят контейнеры
         "garbage": "garbage",  # мусор
         "overflow": "overflow_container",  # заполненный/переполненный контейнер
-        'Large': "large_garbage"  # гора мусора вне зоны контейнеров
+        'large': "large_garbage"  # гора мусора вне зоны контейнеров
     }
     prediction["Container"] += prediction["overflow"]
     out = {
@@ -113,20 +113,20 @@ async def create_point(data: PointData):
     }
     for k, v in prediction.items():
         if v != 0:
-            out[translation[k]] += v
+            out[translation[k.lower()]] += v
 
     container = dict()
     for k, v in out.items():
         if v != 0:
-            container[translation[k]] = v
+            container[k] = v
 
-    if container["container"] == 0 and container["tank"] == 0 and container["place"] == 0:
+    if out["container"] == 0 and out["tank"] == 0:
         ret = await add_garbage(point["address"],
                                 point["lat"],
                                 point["lon"],
                                 current_time,
                                 photo,
-                                'have' if prediction["garbage"] or prediction["large_garbage"] else 'solve')
+                                'have' if prediction["garbage"] or prediction["Large"] else 'solve')
     else:
         ret = await add_point_information(
             point['address'],
