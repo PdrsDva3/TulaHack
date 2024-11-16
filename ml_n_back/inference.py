@@ -6,7 +6,7 @@ import os
 
 
 
-model = YOLO("C:/Users/aria_/PycharmProjects/TulaHack/ml/best.onnx")
+model = YOLO("/ml_n_back/best.onnx")
 
 objects = {
     "Bin": 0,  # контейнер с решеткой или отверстиями
@@ -21,6 +21,7 @@ objects = {
 
 label_dict = {0: 'Bin', 1: 'Container', 2: 'Large', 3: 'Place', 4: 'Tank', 5: 'garbage', 6: 'garbage_bin',
               7: 'overflow'}
+
 
 
 def count_labels(array):

@@ -14,8 +14,8 @@ def process_1():
 
   model = get_model(model_id="-vqmac/1")
 
-  source_folder = "/Users/alexgorin/tula/TulaHack/ml/data"
-  target_folder = "/Users/alexgorin/tula/TulaHack/ml/processed"
+  source_folder = "/Users/alexgorin/tula/TulaHack/ml_n_back/data"
+  target_folder = "/Users/alexgorin/tula/TulaHack/ml_n_back/processed"
 
   for root, dirs, files in os.walk(source_folder):
       # print(root, dirs, files)
@@ -53,8 +53,8 @@ def process_2():
 
   model = get_model(model_id="russian-garbage-detection/3")
 
-  source_folder = "/Users/alexgorin/tula/TulaHack/ml/data"
-  target_folder = "/Users/alexgorin/tula/TulaHack/ml/processed_1"
+  source_folder = "/Users/alexgorin/tula/TulaHack/ml_n_back/data"
+  target_folder = "/Users/alexgorin/tula/TulaHack/ml_n_back/processed_1"
 
   for root, dirs, files in os.walk(source_folder):
       # print(root, dirs, files)

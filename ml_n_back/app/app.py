@@ -74,7 +74,7 @@ async def create_point(data: PointData):
         raise HTTPException(status_code=418, detail="i am a teapot ;)")
 
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    from ml.inference import predict
+    from inference import predict
 
     photo, prediction = predict(point["photo"])
 
