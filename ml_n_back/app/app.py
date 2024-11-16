@@ -5,8 +5,7 @@ from datetime import datetime
 from fastapi import FastAPI, HTTPException, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, \
-    get_point_by_coordinates, get_user, login_user
+from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, get_point_by_coordinates, get_user, login_user
 
 app = FastAPI()
 
@@ -15,7 +14,7 @@ origins = [
     "https://localhost.tiangolo.com",
     "http://localhost",
     "http://localhost:8080",
-    "http://localhost:5713",
+    "http://localhost:5173",
 ]
 
 app.add_middleware(
@@ -29,7 +28,7 @@ app.add_middleware(
 
 points_router = APIRouter()
 
-@points_router.get("/point/all")
+@points_router.get("/all")
 async def get_all_points_h():
     all_points = await get_all_points()
     if not all_points:
@@ -37,7 +36,7 @@ async def get_all_points_h():
     return all_points
 
 
-@points_router.get("/point/{point_id}")
+@points_router.get("/{point_id}")
 async def get_point_info(point_id: int):
     point = await get_point_information_by_id(point_id)
     if not point:
@@ -66,7 +65,7 @@ class PointData(BaseModel):
         arbitrary_types_allowed = True
 
 
-@points_router.post("/point")
+@points_router.post("/add")
 async def create_point(data: PointData):
     point = data.dict()
     point1 = await get_point_by_coordinates(point["address"], point["lat"], point["lon"])
@@ -105,23 +104,32 @@ app.include_router(points_router, prefix="/point", tags=["point"])
 user_router = APIRouter()
 
 
-@user_router.get("/user/{user_id}")
+@user_router.get("/{user_id}")
 async def get_user_h(user_id: int):
     user = await get_user(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+class RegUsr(BaseModel):
+    email: str
+    password: str
+    name: str
 
-@user_router.post("/user/registration")
-async def create_user_h(email: str, password: str, name: str):
-    user_id = await create_user(email, password, name)
+    class Config:
+        arbitrary_types_allowed = True
+
+
+@user_router.post("/registration")
+async def create_user_h(data: RegUsr):
+    user = data.dict()
+    user_id = await create_user(user["email"], user["password"], user["name"])
     if user_id is None:
         raise HTTPException(status_code=500, detail="Internal Server Error")
-    return user_id
+    return user_id[0]
 
 
-@user_router.post("/user/login")
+@user_router.post("/login")
 async def login_user_h(email: str, password: str):
     user_id = await login_user(email, password)
     if user_id is None:
