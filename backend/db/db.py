@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import psycopg2
 from psycopg2 import sql
@@ -23,6 +23,7 @@ async def get_all_points():
     cursor = connection.cursor()
 
     try:
+        three_days_ago = datetime.now().date() - timedelta(days=3)
         query = sql.SQL("""
         SELECT id, address, lat, lon, last_ts, problems FROM points
         """)
@@ -31,7 +32,8 @@ async def get_all_points():
         rows = cursor.fetchall()
 
         points = [
-            {"id": row[0], "address": row[1], "lat": row[2], "lon": row[3], "last_ts": row[4], "problems": row[5]}
+            {"id": row[0], "address": row[1], "lat": row[2], "lon": row[3], "last_ts": row[4],
+             "problems": row[5] if three_days_ago < row[4].date() else "old"}
             for row in rows
         ]
 
