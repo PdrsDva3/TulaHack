@@ -6,7 +6,7 @@ import os
 
 
 
-model = YOLO("/ml_n_back/best.onnx")
+model = YOLO("C:/Users/aria_/PycharmProjects/TulaHack/ml_n_back/best.onnx")
 
 objects = {
     "Bin": 0,  # контейнер с решеткой или отверстиями
@@ -14,7 +14,6 @@ objects = {
     "Container": 0,  # тут и так понятно
     "Place": 0,  # место где стоят контейнеры
     "garbage": 0,  # мусор
-    "garbage_bin": 0,  # это не нужно но если что - это тоже контейнер
     "overflow": 0,  # заполненный/переполненный контейнер
     'Large': 0  # гора мусора вне зоны контейнеров
 }

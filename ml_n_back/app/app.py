@@ -1,11 +1,12 @@
 import json
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
-from docx import Document
 from fastapi import FastAPI, HTTPException, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, \
+    get_point_by_coordinates, get_user, login_user, get_statistic_container, get_statistic_container_solve
 from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, get_point_by_coordinates, get_user, login_user, get_report_today
 
 app = FastAPI()
@@ -98,6 +99,7 @@ async def create_point(data: PointData):
         raise HTTPException(status_code=418, detail="i am a teapot ;)")
     return "succes"
 
+
 app.include_router(points_router, prefix="/point", tags=["point"])
 
 # ======================users
@@ -111,6 +113,7 @@ async def get_user_h(user_id: int):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
+
 
 class RegUsr(BaseModel):
     email: str
@@ -257,3 +260,62 @@ async def get_today(data: ReportToday):
 #     db_data = await get_report_period(data["lat"], data["lon"], data["ts_1"], data["ts_2"])
 
 app.include_router(reports_router, prefix="/report", tags=["report"])
+
+# ======================statistic
+
+statistic_router = APIRouter()
+app.include_router(statistic_router, prefix="/statistic", tags=["statistic"])
+
+
+class StatisticData(BaseModel):
+    ts_1: str
+    ts_2: str
+
+    class Config:
+        arbitrary_types_allowed = True
+
+
+@statistic_router.post("container")
+async def get_statistic(data: StatisticData):
+    data = data.dict()
+    ts1 = (datetime.strptime(data["ts_1"], "%Y-%m-%d %H:%M:%S")).date()
+
+    ts2 = (datetime.strptime(data["ts_2"], "%Y-%m-%d %H:%M:%S")).date()
+
+    statics = {
+        "see": 0,
+        "bad": 0,
+        "no_see": 0,
+    }
+
+    while ts1 != ts2 + timedelta(days=1):
+        static = await get_statistic_container(ts1)
+        statics["see"] += static["see"]
+        statics["bad"] += static["bad"]
+        statics["no_see"] += static["no_see"]
+        ts1 += timedelta(days=1)
+
+    return statics
+
+@statistic_router.post("solve")
+async def get_statistic(data: StatisticData):
+    data = data.dict()
+    ts1 = (datetime.strptime(data["ts_1"], "%Y-%m-%d %H:%M:%S")).date()
+
+    ts2 = (datetime.strptime(data["ts_2"], "%Y-%m-%d %H:%M:%S")).date()
+
+    statics = {
+            "error": 0,
+            "solve": 0,
+    }
+
+    while ts1 != ts2 + timedelta(days=1):
+        static = await get_statistic_container_solve(ts1)
+        statics["error"] += static["error"]
+        statics["solve"] += static["solve"]
+        ts1 += timedelta(days=1)
+
+    return statics
+
+app.include_router(statistic_router, prefix="/statistic", tags=["statistic"])
+
