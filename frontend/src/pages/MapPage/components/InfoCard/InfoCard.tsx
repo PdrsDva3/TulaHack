@@ -1,11 +1,30 @@
-import { Box, Button, Chip, Container, Divider, Typography } from '@mui/material';
+import { Box, Button, Chip, Container, Typography } from '@mui/material';
 import dowload from '../../../../assets/svg/dowload.svg';
 import axios from 'axios';
+import { convertMarkerColor, convertMarkerProblems, formatDate } from '../../../../utils';
 
-export const InfoCard = () => {
-	const lat: string = '1';
-	const lon: string = '1';
+interface InfoCardProps {
+	address: string;
+	lat: string;
+	lon: string;
+	problems: string;
+	containers: {
+		Place: number;
+		Container: number;
+	};
+	ts_2: string;
+	isGarbage: boolean;
+}
 
+export const InfoCard: React.FC<InfoCardProps> = ({
+	address,
+	lat,
+	lon,
+	problems,
+	containers,
+	ts_2,
+	isGarbage,
+}) => {
 	const getLastReport = async (lat: string, lon: string) => {
 		try {
 			// Отправляем запрос с JSON данными
@@ -42,7 +61,7 @@ export const InfoCard = () => {
 				display: 'flex',
 				flexDirection: 'column',
 				gap: 2,
-				maxHeight:"300px",
+				maxHeight: '300px',
 				backgroundColor: 'common.white',
 				borderRadius: '20px',
 				my: 2,
@@ -81,68 +100,44 @@ export const InfoCard = () => {
 				</Button>
 			</Box>
 			<Box
-				className="adress_field"
-				sx={{ display: 'flex', justifyContent: 'space-between' }}
+				sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
 			>
 				<Typography variant="h4">Адрес:</Typography>
 				<Typography variant="h5" sx={{ color: 'secondary.dark' }}>
-					ул. Поляны д. 9
+					{address}
 				</Typography>
 			</Box>
-
 			<Box
-				className="coordinates_field"
-				sx={{ display: 'flex', justifyContent: 'space-between' }}
+				sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
 			>
 				<Typography variant="h4">Координаты:</Typography>
 				<Typography variant="h5" sx={{ color: 'secondary.dark' }}>
-					12.12345678, 23.123456789
+					{lat}, {lon}
 				</Typography>
 			</Box>
-
 			<Box
-				className="problem_field"
-				sx={{ display: 'flex', justifyContent: 'space-between' }}
+				sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
 			>
 				<Typography variant="h4">Проблема:</Typography>
 				<Chip
-					label="Обнаружена в 9:20"
+					label={`${convertMarkerProblems(problems)} ${formatDate(ts_2)}`}
 					component="p"
-					color="error"
-					sx={{ borderRadius: '5px' }}
+					color="secondary"
+					sx={{
+						borderRadius: '5px',
+						backgroundColor: isGarbage ? '#0000FF' : `${convertMarkerColor(problems)}`,
+						color: 'white',
+					}}
 				/>
 			</Box>
-
-			<Box className="bot_messege_field" sx={{ display: 'flex', gap: 1 }}>
-				<Typography variant="h6" color="secondary.dark">
-					Уведомление от чат-бота:
+			{/* <Divider variant="middle" sx={{ width: '100%', color: 'primary', py: 1, m: 0 }} /> */}
+			<Box
+				sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center', gap: 5 }}
+			>
+				<Typography variant="h4">Контейнеры:</Typography>
+				<Typography variant="h5" sx={{ color: 'secondary.dark' }}>
+					{containers.Container} шт.
 				</Typography>
-				<Typography variant="h6" color="secondary.dark">
-					Отправлено
-				</Typography>
-			</Box>
-
-			<Box className="container_field">
-				<Typography variant="h4" sx={{ display: 'flex', justifyContent: 'left' }}>
-					Контейнеры:
-				</Typography>
-				<Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-					<Typography variant="h6">кол-во</Typography>
-					<Typography variant="h6">тип</Typography>
-					<Typography variant="h6">статус</Typography>
-				</Box>
-				<Divider variant="middle" sx={{ width: '25vw', color: 'primary', py: 1 }} />
-				<Box sx={{ display: 'flex', justifyContent: 'space-around', pl: 4 }}>
-					<Typography variant="h6" color="secondary.dark">
-						5
-					</Typography>
-					<Typography variant="h6" color="secondary.dark">
-						стандартный
-					</Typography>
-					<Typography variant="h6" color="secondary.dark">
-						в работе
-					</Typography>
-				</Box>
 			</Box>
 		</Container>
 	);

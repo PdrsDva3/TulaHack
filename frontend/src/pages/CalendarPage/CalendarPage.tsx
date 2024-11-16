@@ -1,6 +1,5 @@
 import { Box, Button, Container, Divider, Grid2, Typography } from '@mui/material';
 import { FC } from 'react';
-// import { useEffect } from 'react';
 import dowload from '../../assets/svg/dowload.svg';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -48,7 +47,7 @@ export const CalendarPage: FC = () => {
 			spacing={4}
 			sx={{
 				justifyItems: 'stretch',
-				px:"5vw"
+				px: '5vw',
 			}}
 		>
 			<Grid2 size={4}>
@@ -166,16 +165,19 @@ export const CalendarPage: FC = () => {
 					</LocalizationProvider>
 				</Container>
 			</Grid2>
-			<Grid2 size={8} sx={{display:"flex"}}>
+			<Grid2 size={8} sx={{ display: 'flex' }}>
 				<Box
 					sx={{
 						borderRadius: '10px',
 						minHeight: '70vh',
 						minWidth: '60vw',
-
 					}}
 				>
-					<YandexMap center={[54.1921, 37.6156]} zoom={10}></YandexMap>
+					<YandexMap
+						center={[54.1921, 37.6156]}
+						zoom={10}
+						apiEndpoint="point/all"
+					></YandexMap>
 				</Box>
 			</Grid2>
 		</Grid2>
