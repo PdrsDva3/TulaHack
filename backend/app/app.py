@@ -74,17 +74,25 @@ async def create_point(data: PointData):
         raise HTTPException(status_code=418, detail="i am a teapot ;)")
 
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    from ml.inference import predict
+
+    photo, prediction = predict(point["photo"])
+
+    out = dict()
+    for k, v in prediction.items():
+        if v != 0:
+            out[k] = v
 
     ret = await add_point_information(
         point['address'],
         point['lat'],
         point['lon'],
         point1['problems'],
-        json.dumps({"какие-то": "данные от мл"}),
+        json.dumps(out),
         current_time,
-        point['photo'],
-        0,
-        ''
+        photo,
+        prediction["garbage"],
+        'bad' if prediction["garbage"] else ''
     )
     if not ret:
         raise HTTPException(status_code=418, detail="i am a teapot ;)")

@@ -145,7 +145,7 @@ async def add_point_information(address, lat, lon, problems, containers, ts, pho
                 """INSERT INTO information_point (id_point, containers, ts_1, ts_2, 
                 photo_1, photo_2, other_trash, status)
 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""")
-            cursor.execute(query, (id_point, containers, ts, ts, photo, photo, other_trash, status))
+            cursor.execute(query, (id_point, containers, ts, ts, photo, "", other_trash, status))
         else:
             query = sql.SQL(
                 """UPDATE information_point 
