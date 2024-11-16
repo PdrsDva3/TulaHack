@@ -70,7 +70,16 @@ CREATE TABLE IF NOT EXISTS garbage
     photo_1 varchar,
     photo_2 varchar,
     status  varchar default 'не убрана'
-);""")
+);
+
+CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            email varchar,
+            name VARCHAR,
+            hashed_pwd VARCHAR
+            );
+
+""")
 
         cur.execute(create)  # Выполняем запрос на создание таблицы
         conn.commit()
