@@ -7,16 +7,17 @@
 .login_form {
 	position: absolute;
 	top: 50%;
-	transform: translate(0%, -50%);
-	left: 40%;
-	transform: translate(0%, -50%);
+	transform: translate(0%, 0%);
 	width: 400px;
-	height: 550px;
+	min-height: 60vh;
 	border-radius: 20px;
 	display: flex;
 	flex-direction: column;
 	gap: 50px;
+<<<<<<< HEAD
 	background-color: rgb(255, 255, 255);
+=======
+>>>>>>> 7ffcb532ce1c18e3ac3e887d68bf9d4835d8e1d7
 	z-index: 60;
 	align-items: center;
 	padding: 20px;
@@ -49,14 +50,22 @@
 .left_orange_house {
 	position: absolute;
 	bottom: 0;
+<<<<<<< HEAD
 	left: 9%;
+=======
+	left: 10%;
+>>>>>>> 7ffcb532ce1c18e3ac3e887d68bf9d4835d8e1d7
 	z-index: 25;
 }
 
 .left_orange_window {
 	position: absolute;
 	bottom: 0%;
+<<<<<<< HEAD
 	left: 13%;
+=======
+	left: 15%;
+>>>>>>> 7ffcb532ce1c18e3ac3e887d68bf9d4835d8e1d7
 	z-index: 30;
 }
 
@@ -126,7 +135,7 @@
 
 .line_wrap {
 	position: absolute;
-	top: 10%;
+	bottom: 0;
 	display: flex;
 	align-items: center;
 	flex-direction: column;

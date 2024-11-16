@@ -11,4 +11,5 @@ export type { HTTPValidationError } from './models/HTTPValidationError';
 export type { PointData } from './models/PointData';
 export type { ValidationError } from './models/ValidationError';
 
-export { DefaultService } from './services/DefaultService';
+export { PointService } from './services/PointService';
+export { UserService } from './services/UserService';

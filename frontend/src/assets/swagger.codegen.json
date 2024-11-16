@@ -2,10 +2,11 @@
 	"openapi": "3.1.0",
 	"info": { "title": "FastAPI", "version": "0.1.0" },
 	"paths": {
-		"/points/all": {
+		"/point/all": {
 			"get": {
+				"tags": ["point"],
 				"summary": "Get All Points H",
-				"operationId": "get_all_points_h_points_all_get",
+				"operationId": "get_all_points_h_point_all_get",
 				"responses": {
 					"200": {
 						"description": "Successful Response",
@@ -14,10 +15,11 @@
 				}
 			}
 		},
-		"/points/{point_id}": {
+		"/point/{point_id}": {
 			"get": {
+				"tags": ["point"],
 				"summary": "Get Point Info",
-				"operationId": "get_point_info_points__point_id__get",
+				"operationId": "get_point_info_point__point_id__get",
 				"parameters": [
 					{
 						"name": "point_id",
@@ -42,16 +44,122 @@
 				}
 			}
 		},
-		"/point": {
+		"/point/add": {
 			"post": {
+				"tags": ["point"],
 				"summary": "Create Point",
-				"operationId": "create_point_point_post",
+				"operationId": "create_point_point_add_post",
 				"requestBody": {
 					"content": {
 						"application/json": { "schema": { "$ref": "#/components/schemas/PointData" } }
 					},
 					"required": true
 				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/{user_id}": {
+			"get": {
+				"tags": ["user"],
+				"summary": "Get User H",
+				"operationId": "get_user_h_user__user_id__get",
+				"parameters": [
+					{
+						"name": "user_id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "integer", "title": "User Id" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/registration": {
+			"post": {
+				"tags": ["user"],
+				"summary": "Create User H",
+				"operationId": "create_user_h_user_registration_post",
+				"parameters": [
+					{
+						"name": "email",
+						"in": "query",
+						"required": true,
+						"schema": { "type": "string", "title": "Email" }
+					},
+					{
+						"name": "password",
+						"in": "query",
+						"required": true,
+						"schema": { "type": "string", "title": "Password" }
+					},
+					{
+						"name": "name",
+						"in": "query",
+						"required": true,
+						"schema": { "type": "string", "title": "Name" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/login": {
+			"post": {
+				"tags": ["user"],
+				"summary": "Login User H",
+				"operationId": "login_user_h_user_login_post",
+				"parameters": [
+					{
+						"name": "email",
+						"in": "query",
+						"required": true,
+						"schema": { "type": "string", "title": "Email" }
+					},
+					{
+						"name": "password",
+						"in": "query",
+						"required": true,
+						"schema": { "type": "string", "title": "Password" }
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "Successful Response",

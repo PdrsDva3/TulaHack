@@ -65,31 +65,31 @@ theme = createTheme({
 	},
 
 	typography: {
-		fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
+		fontFamily: '"Helvetica", "Arial", sans-serif',
 		fontSize: 15,
 
 		h1: {
-			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
+			fontFamily: '"Helvetica", "Arial", sans-serif',
 			fontSize: 35,
 		},
 		h2: {
-			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
+			fontFamily: '"Helvetica", "Arial", sans-serif',
 			fontSize: 22,
 		},
 		h3: {
-			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
+			fontFamily: '"Helvetica", "Arial", sans-serif',
 			fontSize: 20,
 		},
 		h4: {
-			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
+			fontFamily: '"Helvetica", "Arial", sans-serif',
 			fontSize: 16,
 		},
 		h5: {
-			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
+			fontFamily: '"Helvetica", "Arial", sans-serif',
 			fontSize: 14,
 		},
 		h6: {
-			fontFamily: '"RRG", "Roboto", "Helvetica", "Arial", sans-serif',
+			fontFamily: '"Helvetica", "Arial", sans-serif',
 			fontSize: 12,
 		},
 	},

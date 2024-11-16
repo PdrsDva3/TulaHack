@@ -21,5 +21,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "node_modules/@yandex/ymaps3-types/index.d.ts"
+  ]
 }

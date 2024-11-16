@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write ./src",
-    "codegen": "npx openapi-typescript-codegen --input .\\\\src\\\\assets\\\\swagger.codegen.json --output .\\\\src\\\\api\\\\"
+    "codegen": "npx openapi-typescript-codegen --input .\\src\\assets\\swagger.codegen.json --output .\\src\\api\\",
+    "compile": "./node_modules/.bin/tsc",
+    "start": "npx http-server ."
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -18,7 +20,9 @@
     "@mui/material": "^6.1.7",
     "@mui/x-charts": "^7.22.2",
     "@mui/x-date-pickers": "^7.22.2",
+    "@pbe/react-yandex-maps": "^1.2.5",
     "axios": "^1.7.7",
+    "base-64": "^1.0.0",
     "dayjs": "^1.11.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -30,10 +34,12 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "@yandex/ymaps3-types": "^1.0.15214209",
     "eslint": "^9.9.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
+    "http-server": "14.1.1",
     "prettier": "^3.3.3",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",

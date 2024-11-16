@@ -7,7 +7,6 @@ export const InfoCard = () => {
 			sx={{
 				display: 'flex',
 				flexDirection: 'column',
-				width: '28.472vw',
 				gap: 2,
 				backgroundColor: 'common.white',
 				borderRadius: '20px',
@@ -16,7 +15,14 @@ export const InfoCard = () => {
 				boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)',
 			}}
 		>
-			<Box sx={{ display: 'flex', gap: 9 }}>
+			<Box
+				sx={{
+					display: 'flex',
+					gap: 1,
+					justifyContent: 'space-between',
+					alignItems: 'center',
+				}}
+			>
 				<Chip
 					label="Данные КП"
 					component="h3"
