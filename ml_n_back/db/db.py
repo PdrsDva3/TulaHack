@@ -205,7 +205,7 @@ async def get_user(user_id):
             # logger.debug("-" * 40)
 
 
-async def create_user(login, password, name):
+async def create_user(login, password, name) -> int:
     connection = db_connection()
     cursor = connection.cursor()
 
@@ -222,6 +222,7 @@ async def create_user(login, password, name):
         connection.commit()
         logger.info("Created user successfully")
 
+        print(user_id)
         return user_id
 
     except (Exception, psycopg2.DatabaseError) as error:
