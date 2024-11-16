@@ -3,9 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export type PointData = {
-    address: string;
-    lat: string;
-    lon: string;
-    photo: string;
+	address: string;
+	lat: string;
+	lon: string;
+	photo: string;
 };
-

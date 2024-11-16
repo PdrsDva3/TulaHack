@@ -22,7 +22,7 @@ export const Header: FC = () => {
 			}}
 		>
 			<Button variant="text" sx={{ color: 'common.black' }} onClick={() => navigate('/')}>
-				<House/>
+				<House />
 			</Button>
 
 			<Toolbar sx={{ display: 'flex', gap: 10 }}>

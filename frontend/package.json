@@ -9,9 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write ./src",
-    "codegen": "npx openapi-typescript-codegen --input .\\src\\assets\\swagger.codegen.json --output .\\src\\api\\",
-    "compile": "./node_modules/.bin/tsc",
-    "start": "npx http-server ."
+    "codegen": "npx openapi-typescript-codegen --input .\\src\\assets\\swagger.codegen.json --output .\\src\\api\\"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -21,6 +19,7 @@
     "@mui/x-charts": "^7.22.2",
     "@mui/x-date-pickers": "^7.22.2",
     "@pbe/react-yandex-maps": "^1.2.5",
+    "@types/yandex-maps": "^2.1.36",
     "axios": "^1.7.7",
     "base-64": "^1.0.0",
     "dayjs": "^1.11.13",
@@ -34,7 +33,6 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
-    "@yandex/ymaps3-types": "^1.0.15214209",
     "eslint": "^9.9.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",

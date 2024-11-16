@@ -12,6 +12,7 @@ export const PhotoCard = () => {
 				gap: 2,
 				display: 'flex',
 				flexDirection: 'column',
+				maxHeight: '400px',
 				py: 2,
 				boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)',
 			}}
@@ -33,7 +34,7 @@ export const PhotoCard = () => {
 					</Button>
 				</Box>
 			</Box>
-			<img src={photo} />
+			<img src={photo} style={{maxHeight: '320px', borderRadius:"10px"}}/>
 		</Container>
 	);
 };

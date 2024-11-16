@@ -29,27 +29,6 @@ export const LoginPage: FC = () => {
 	return (
 		<section className="login">
 			<div className="main_wrapper">
-				{/* <div>
-					<img src={left_grey_house} className="left_grey_house" />
-					<img src={left_white_house} className="left_white_house" />
-					<img src={left_grey_window} className="left_grey_window" />
-					<img src={left_orange_house} className="left_orange_house" />
-					<img src={left_orange_window} className="left_orange_window" />
-					<img src={left_white_window} className="left_white_window" />
-					<img src={line} className="line" />
-					<img src={line} className="line1" />
-					<img src={right_grey_house} className="right_grey_house" />
-					<img src={right_grey_window} className="right_grey_window" />
-					<img src={right_orange} className="right_orange" />
-					<img src={right_white_house} className="right_white_house" />
-					<img src={right_white_window} className="right_white_window" />
-<<<<<<< HEAD
-					<img src={right_white} className="right_white" />
-				</div> */}
-=======
-					<img src={right_white} className="right_white box-shadow" />
-				</div>
->>>>>>> 7ffcb532ce1c18e3ac3e887d68bf9d4835d8e1d7
 				<div className="line_wrap">
 					<img src={one} className="one" />
 					<img src={two} className="two" />

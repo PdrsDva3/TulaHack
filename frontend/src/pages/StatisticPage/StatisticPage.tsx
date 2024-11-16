@@ -11,18 +11,17 @@ export const StatisticPage: FC = () => {
 	const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs('2024-04-17'));
 	const [toDate, setToDate] = useState<Dayjs | null>(dayjs('2024-04-18'));
 
-	const paletteGarbage = ['red', 'green', 'orange'];
+	const paletteGarbage = ['green', 'orange', 'red'];
 
 	const paletteTrash = ['blue', 'lightblue', 'white'];
 
-	const paletteProblem = ['red', 'lightgreen', 'white'];
+	const paletteProblem = ['lightgreen', 'red', 'white'];
 
-	const descGarbage = ['Вывезено','Есть проблемы','Не вывезено'];
+	const descGarbage = ['Вывезено', 'Есть проблемы', 'Не вывезено'];
 
-	const descTrash = ['Ликвидированно','Не ликвидированно'];
+	const descTrash = ['Ликвидированно', 'Не ликвидированно'];
 
-	const descProblem = ['Решено','Не решено'];
-
+	const descProblem = ['Решено', 'Не решено'];
 
 	return (
 		<Container sx={{ display: 'flex', gap: 6, pt: 10 }}>
@@ -60,7 +59,6 @@ export const StatisticPage: FC = () => {
 							data: [
 								{ id: 0, value: 10 },
 								{ id: 1, value: 15 },
-
 							],
 							outerRadius: 60,
 							innerRadius: 30,
@@ -76,7 +74,6 @@ export const StatisticPage: FC = () => {
 							data: [
 								{ id: 0, value: 10 },
 								{ id: 1, value: 15 },
-
 							],
 							outerRadius: 60,
 							innerRadius: 30,
@@ -99,7 +96,7 @@ export const StatisticPage: FC = () => {
 				/>
 
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
-					<DemoContainer components={['DatePicker', 'DatePicker']}>
+					<DemoContainer components={['DatePicker', 'DatePicker']} sx={{backgroundColor:"common.white", p:2, borderRadius:"10px"}}>
 						<DatePicker
 							label="Controlled picker"
 							value={fromDate}
@@ -126,7 +123,6 @@ export const StatisticPage: FC = () => {
 							innerRadius: 30,
 						},
 					]}
-
 					palette={paletteGarbage}
 					desc={descGarbage}
 				/>
@@ -138,13 +134,11 @@ export const StatisticPage: FC = () => {
 							data: [
 								{ id: 0, value: 10 },
 								{ id: 1, value: 15 },
-
 							],
 							outerRadius: 60,
 							innerRadius: 30,
 						},
 					]}
-
 					palette={paletteTrash}
 					desc={descTrash}
 				/>
@@ -156,13 +150,11 @@ export const StatisticPage: FC = () => {
 							data: [
 								{ id: 0, value: 10 },
 								{ id: 1, value: 15 },
-
 							],
 							outerRadius: 60,
 							innerRadius: 30,
 						},
 					]}
-
 					palette={paletteProblem}
 					desc={descProblem}
 				/>

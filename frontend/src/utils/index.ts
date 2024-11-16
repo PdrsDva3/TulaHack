@@ -1,2 +1,2 @@
 export * from './decode.ts';
-// export * from './ymaps.ts';
+export * from './load-ymaps.ts'

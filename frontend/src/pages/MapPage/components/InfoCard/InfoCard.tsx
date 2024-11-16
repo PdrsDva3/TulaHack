@@ -1,18 +1,40 @@
 import { Box, Button, Chip, Container, Divider, Typography } from '@mui/material';
-// import { DowloadButton } from '../../../../components/DowloadButton/DowloadButton';
-import { api } from '../../../../api/api.ts';
 import dowload from '../../../../assets/svg/dowload.svg';
+import axios from 'axios';
 
 export const InfoCard = () => {
-	const lat:string = '2';
-	const lon:string = '2';
+	const lat: string = '1';
+	const lon: string = '1';
 
-	const btnClick = (lat:string, lon:string) => {
-		api.post('report/today', {
-			lat,
-			lon
-		}).then(res => console.log(res))
-	}
+	const getLastReport = async (lat: string, lon: string) => {
+		try {
+			// Отправляем запрос с JSON данными
+			const response = await axios.post(
+				'http://82.97.249.28:8000/report/today',
+				{ lat, lon },
+				{
+					headers: {
+						'x-device-id': 'stuff',
+						'Content-Type': 'application/json', // Используем JSON
+					},
+					responseType: 'blob', // Ожидаем файл (blob)
+				},
+			);
+
+			// Проверяем MIME-тип
+			const mimeType = response.headers['content-type'];
+			if (mimeType) {
+				const file = new Blob([response.data], { type: mimeType });
+				const fileURL = URL.createObjectURL(file);
+				const a = document.createElement('a');
+				a.href = fileURL;
+				a.download = 'report.docx'; // Задаем имя файла для скачивания
+				a.click();
+			}
+		} catch (error) {
+			console.error('Ошибка при отправке запроса:', error);
+		}
+	};
 
 	return (
 		<Container
@@ -20,6 +42,7 @@ export const InfoCard = () => {
 				display: 'flex',
 				flexDirection: 'column',
 				gap: 2,
+				maxHeight:"300px",
 				backgroundColor: 'common.white',
 				borderRadius: '20px',
 				my: 2,
@@ -49,7 +72,7 @@ export const InfoCard = () => {
 						gap: 2,
 						justifyContent: 'center',
 					}}
-					onClick={() => btnClick(lat, lon)}
+					onClick={() => getLastReport(lat, lon)}
 				>
 					<img src={dowload} />
 					<Typography variant="h5" color="common.black">
@@ -57,7 +80,6 @@ export const InfoCard = () => {
 					</Typography>
 				</Button>
 			</Box>
-
 			<Box
 				className="adress_field"
 				sx={{ display: 'flex', justifyContent: 'space-between' }}
