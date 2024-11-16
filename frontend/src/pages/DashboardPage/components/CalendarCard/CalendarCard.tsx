@@ -6,33 +6,50 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { api } from '../../../../api/api.ts';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const CalendarCard = () => {
+	const navigate = useNavigate();
 	useEffect(() => {
-		api.get('points/all').then(res => {
-			console.log(res)
+		api.get('points/all').then((res) => {
+			console.log(res);
 		});
-	}, [])
+	}, []);
 
 	return (
 		<Container
 			sx={{
+				m: 0,
 				display: 'flex',
 				flexDirection: 'column',
 				gap: 2,
 				backgroundColor: 'common.white',
 				borderRadius: '20px',
-				height: '28.75vw',
+				minHeight: '35vw',
 				width: '27.778vw',
+				minWidth: '320px',
 				alignItems: 'center',
 				justifyContent: 'space-between',
-				boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)'
+				boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)',
+				py: 2,
 			}}
 		>
-			<Box sx={{ pb: 16 }}>
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					width: 1,
+					gap: 2,
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					cursor: 'pointer',
+				}}
+				onClick={() => navigate('/monitoring')}
+			>
 				<Box
 					sx={{
 						display: 'flex',
+						width: 1,
 						gap: 4,
 						justifyContent: 'space-between',
 						alignItems: 'center',
@@ -45,7 +62,7 @@ export const CalendarCard = () => {
 						<ArrowIconCard />
 					</Button>
 				</Box>
-				<Divider variant="middle" sx={{ width: '20vw', color: 'primary' }} />
+				<Divider variant="middle" sx={{ width: 1, color: 'primary' }} />
 			</Box>
 			<LocalizationProvider dateAdapter={AdapterDayjs}>
 				<DemoContainer components={['DateCalendar']}>

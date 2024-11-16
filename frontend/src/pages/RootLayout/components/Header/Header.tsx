@@ -2,21 +2,28 @@ import { FC } from 'react';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import { AppBar, SvgIcon, Typography, Box, Toolbar, Button } from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { MapOutlined, LeaderboardOutlined  } from '@mui/icons-material';
-import ArrowIcon from '../../../../assets/svg/arrowicon.svg?react'
-import LogOut from '../../../../assets/svg/logout.svg?react'
+import { MapOutlined, LeaderboardOutlined } from '@mui/icons-material';
+import ArrowIcon from '../../../../assets/svg/arrowicon.svg?react';
+import LogOut from '../../../../assets/svg/logout.svg?react';
 
 export const Header: FC = () => {
 	const navigate = useNavigate();
 
-	return <AppBar className="header" sx={{backgroundColor:'common.white',position:'static', display:'flex', flexDirection:'row', justifyContent:'space-around', alignItems:'center'}}>
-		<Button
-			variant='text'
-			sx={{color:"common.black"}}
-			onClick={() => navigate(-1)}
+	return (
+		<AppBar
+			className="header"
+			sx={{
+				backgroundColor: 'common.white',
+				position: 'fixed',
+				display: 'flex',
+				flexDirection: 'row',
+				justifyContent: 'space-around',
+				alignItems: 'center',
+			}}
 		>
-		 <ArrowIcon color='common.black' fill='common.black'/>
-		</Button>
+			<Button variant="text" sx={{ color: 'common.black' }} onClick={() => navigate(-1)}>
+				<ArrowIcon color="common.black" fill="common.black" />
+			</Button>
 
 
 		<Toolbar
@@ -38,21 +45,16 @@ export const Header: FC = () => {
 				</Box>
 			</NavLink>
 
-			<NavLink to='/monitoring'>
-				<Box
-					sx={{display:'flex', gap:4, alignItems:'center'}}
-				>
-					<SvgIcon fontSize="medium">
-						<MapOutlined sx={{color:'secondary.dark'}}/>
-					</SvgIcon>
-					<Typography
-						variant='h3'
-						sx={{color:"secondary.dark"}}
-					>
-						Мониторинг
-					</Typography>
-				</Box>
-			</NavLink>
+				<NavLink to="/monitoring">
+					<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+						<SvgIcon fontSize="medium">
+							<MapOutlined sx={{ color: 'secondary.dark' }} />
+						</SvgIcon>
+						<Typography variant="h3" sx={{ color: 'secondary.dark' }}>
+							Мониторинг
+						</Typography>
+					</Box>
+				</NavLink>
 
 			<NavLink to='/statistic'>
 				<Box
@@ -71,13 +73,16 @@ export const Header: FC = () => {
 			</NavLink>
 		</Toolbar>
 
-		<Button
-			variant='text'
-			sx={{color:"common.black", gap:2}}
-			onClick={() => navigate("/login")}
-		>
-		 <LogOut/>
-		 <Typography variant='h4' sx={{color:"common.black"}}>Выйти</Typography>
-		</Button>
-	</AppBar>;
+			<Button
+				variant="text"
+				sx={{ color: 'common.black', gap: 2 }}
+				onClick={() => navigate('/login')}
+			>
+				<LogOut />
+				<Typography variant="h4" sx={{ color: 'common.black' }}>
+					Выйти
+				</Typography>
+			</Button>
+		</AppBar>
+	);
 };

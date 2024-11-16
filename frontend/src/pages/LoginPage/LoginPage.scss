@@ -1,33 +1,30 @@
-.main_wrapper{
+.main_wrapper {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
 }
 
 .login_form {
 	position: absolute;
-	top:50%;
-	transform: translate(0%,-50%);
+	top: 50%;
+	transform: translate(0%, -50%);
 	left: 40%;
-	transform: translate(0%,-50%);
+	transform: translate(0%, -50%);
 	width: 400px;
 	height: 550px;
 	border-radius: 20px;
 	display: flex;
 	flex-direction: column;
 	gap: 50px;
-	background-color:rgb(131, 130, 130);
+	background-color: rgb(131, 130, 130);
 	z-index: 60;
 	align-items: center;
 	padding: 20px;
-
-
 }
 
 .left_grey_house {
 	position: absolute;
-	bottom:0;
+	bottom: 0;
 	left: 30%;
 	z-index: 10;
 }
@@ -93,7 +90,6 @@
 	bottom: 13%;
 	right: 20.5%;
 	z-index: 75;
-
 }
 
 .right_orange {

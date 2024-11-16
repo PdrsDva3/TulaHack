@@ -10,9 +10,10 @@ export const DashboardPage: FC = () => {
 			sx={{
 				display: 'flex',
 				gap: 8,
-				alignItems:"center",
-				pt:"9svw"
-				}}>
+				alignItems: 'center',
+				justifyContent: 'space-between',
+			}}
+		>
 			<CalendarCard />
 			<MonitoringCard />
 			<StatisticCard />
