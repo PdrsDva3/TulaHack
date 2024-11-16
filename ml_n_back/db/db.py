@@ -22,6 +22,7 @@ logging.basicConfig(
 async def get_all_points():
     connection = db_connection()
     cursor = connection.cursor()
+    out = dict()
 
     try:
         three_days_ago = datetime.now().date() - timedelta(days=3)
@@ -49,8 +50,23 @@ async def get_all_points():
             point = {"id": row[0], "address": row[1], "lat": row[2], "lon": row[3], "last_ts": row[4],
                      "problems": status}
             points.append(point)
+        out['points'] = points
+
+        query = sql.SQL("""
+        SELECT id, address, lat, lon, ts_2, status FROM garbage
+        """)
+        cursor.execute(query)
+
+        rows = cursor.fetchall()
+        points = []
+        for row in rows:
+            point = {"id": row[0], "address": row[1], "lat": row[2], "lon": row[3], "last_ts": row[4],
+                     "problems": row[5]}
+            points.append(point)
+
         logger.info("Database fetched successfully")
-        return points
+        out['garbage'] = points
+        return out
 
     except (Exception, psycopg2.DatabaseError) as error:
         logger.error(error)
@@ -91,6 +107,47 @@ order by ts_2 desc limit 1;
 
     except (Exception, psycopg2.DatabaseError) as error:
         logger.error(error)
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+            logger.info('Database connection closed.')
+
+
+async def get_garbage_information_by_id(id_garbage):
+    connection = db_connection()
+    cursor = connection.cursor()
+    try:
+        query = sql.SQL("""
+        SELECT id, address, lat, lon, ts_2, photo_1, photo_2, status 
+        FROM garbage WHERE id = %s;
+        """)
+        cursor.execute(query, (id_garbage,))
+
+        row = cursor.fetchone()
+
+        # Проверка на случай, если не найдено записи с таким id
+        if row is None:
+            logger.warning(f"Garbage with id {id_garbage} not found.")
+            return None
+
+        point = {
+            "id": row[0],
+            "address": row[1],
+            "lat": row[2],
+            "lon": row[3],
+            "last_ts": row[4],
+            "photo_1": row[5],
+            "photo_2": row[6],
+            "status": row[7]
+        }
+
+        logger.info("Database fetched successfully")
+        return point
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        logger.error(f"Error fetching garbage info: {error}")
+
     finally:
         if connection:
             cursor.close()
@@ -183,6 +240,44 @@ problems = (
 )
 WHERE id = %s;""")
         cursor.execute(query, (ts, id_point))
+
+        connection.commit()
+        logger.info("Created successfully")
+        return 1
+    except (Exception, psycopg2.DatabaseError) as error:
+        logger.error(error)
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+            logger.info('Database connection closed.')
+
+
+async def add_garbage(address, lat, lon, ts, photo, status):
+    connection = db_connection()
+    cursor = connection.cursor()
+
+    try:
+        query = sql.SQL("""SELECT id
+        FROM garbage
+        WHERE lat = %s and lon = %s;""")
+        cursor.execute(query, (lat, lon))
+        row = cursor.fetchone()
+        if row is None:
+            query = sql.SQL(
+                """INSERT INTO garbage (address, lat, lon, ts_1, ts_2,
+                photo_1, status)
+VALUES (%s, %s, %s, %s, %s, %s, %s);""")
+            cursor.execute(query,
+                           (address, lat, lon, ts, ts, photo, status))
+        else:
+            query = sql.SQL(
+                """update garbage
+                set ts_2 = %s, photo_2 = %s, status = %s
+                where id = %s;
+                """
+            )
+            cursor.execute(query, (ts, photo, status, row[0]))
 
         connection.commit()
         logger.info("Created successfully")
@@ -351,7 +446,6 @@ async def get_statistic_container_solve(data):
     cursor = connection.cursor()
 
     try:
-
         day_ago = data - timedelta(days=1)
         query = sql.SQL("""SELECT id_point, status FROM information_point WHERE Date(ts_1) = %s""")
         cursor.execute(query, (data,))
@@ -371,7 +465,8 @@ async def get_statistic_container_solve(data):
             status_ago = row[0]
             if status_ago == "see" and (status == "bad" or status == "old" or status == "in_process"):
                 static["error"] += 1
-            elif status == "see" and (status_ago == "bad" or status_ago == "old" or status_ago == "in_process" or status == "no_see"):
+            elif status == "see" and (
+                    status_ago == "bad" or status_ago == "old" or status_ago == "in_process" or status == "no_see"):
                 static["solve"] += 1
 
         return static
@@ -391,26 +486,60 @@ async def get_report_today(lat, lon):
 
     try:
         get_id_ts_query = sql.SQL("""
-                SELECT id, last_ts from points
+                SELECT id, last_ts, address from points
                 WHERE lat=%s and lon=%s;
                 """)
-        cursor.execute(get_id_ts_query, (lat, lon))
+        cursor.execute(get_id_ts_query, (lat, lon,))
 
         row = cursor.fetchone()
-
         point_id = row[0]
         last_ts = row[1]
+        address = row[2]
 
         get_last_data = sql.SQL("""
-                SELECT containers, other_trash, status from information_point
+                SELECT containers, other_trash, status, photo_1, photo_2 from information_point
                 WHERE id_point=%s and (ts_1=%s or ts_2=%s);
         """)
-        cursor.execute(get_last_data, (point_id, last_ts, last_ts, ))
+        cursor.execute(get_last_data, (point_id, last_ts, last_ts,))
 
         data_row = cursor.fetchone()
+        report_data = {"address": address, "containers": data_row[0], "other_trash": data_row[1], "status": data_row[2],
+                       "photo_1": data_row[3], "photo_2": data_row[4]}
+        return report_data
 
-        report_data = {"containers": data_row[0], "other_trash": data_row[1], "status": data_row[2]}
 
+    except (Exception, psycopg2.DatabaseError) as error:
+        logger.error(error)
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+            logger.info('Database connection closed.')
+
+
+async def get_report_in_day(lat, lon, data):
+    connection = db_connection()
+    cursor = connection.cursor()
+
+    try:
+        get_id_ts_query = sql.SQL("""
+                SELECT id, address from points
+                WHERE lat=%s and lon=%s;
+                """)
+        cursor.execute(get_id_ts_query, (lat, lon,))
+        row = cursor.fetchone()
+        point_id = row[0]
+        address = row[1]
+
+        get_last_data = sql.SQL("""
+                        SELECT containers, other_trash, status, photo_1, photo_2 from information_point
+                        WHERE id_point=%s and date(ts_1)=%s;
+                """)
+        cursor.execute(get_last_data, (point_id, data,))
+
+        data_row = cursor.fetchone()
+        report_data = {"address": address, "containers": data_row[0], "other_trash": data_row[1], "status": data_row[2],
+                       "photo_1": data_row[3], "photo_2": data_row[4]}
         return report_data
 
 

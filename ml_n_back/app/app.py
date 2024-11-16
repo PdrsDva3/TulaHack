@@ -7,8 +7,10 @@ from fastapi import FastAPI, HTTPException, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, \
-    get_point_by_coordinates, get_user, login_user, get_statistic_container, get_statistic_container_solve
-from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, get_point_by_coordinates, get_user, login_user, get_report_today
+    get_point_by_coordinates, get_user, login_user, get_statistic_container, get_statistic_container_solve, \
+    get_report_in_day, add_garbage, get_garbage_information_by_id
+from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, \
+    get_point_by_coordinates, get_user, login_user, get_report_today
 
 import os
 import uuid
@@ -50,6 +52,13 @@ async def get_point_info(point_id: int):
         raise HTTPException(status_code=404, detail="Invalid ID")
     return point
 
+@points_router.get("/garbage/{garbage_id}")
+async def get_point_info(garbage_id: int):
+    garbage = await get_garbage_information_by_id(garbage_id)
+    if not garbage:
+        raise HTTPException(status_code=404, detail="Invalid ID")
+    return garbage
+
 
 from typing import Dict, Any
 
@@ -83,23 +92,52 @@ async def create_point(data: PointData):
     from inference import predict
 
     photo, prediction = predict(point["photo"])
-
-    out = dict()
+    translation = {
+        "Bin": "container",  # контейнер с решеткой или отверстиями
+        "Tank": "tank",  # очень большой контейнер
+        "Container": "container",  # тут и так понятно
+        "Place": "place",  # место, где стоят контейнеры
+        "garbage": "garbage",  # мусор
+        "overflow": "overflow_container",  # заполненный/переполненный контейнер
+        'Large': "large_garbage"  # гора мусора вне зоны контейнеров
+    }
+    prediction["Container"] += prediction["overf"]
+    out = {
+        "place": 0,
+        "container": 0,
+        "overflow_container": 0,
+        "tank": 0,
+        "garbage": 0,
+        "large_garbage": 0
+    }
     for k, v in prediction.items():
         if v != 0:
-            out[k] = v
+            out[translation[k]] += v
 
-    ret = await add_point_information(
-        point['address'],
-        point['lat'],
-        point['lon'],
-        point1['problems'],
-        json.dumps(out),
-        current_time,
-        photo,
-        prediction["garbage"],
-        'bad' if prediction["garbage"] else ''
-    )
+    container = dict()
+    for k, v in out.items():
+        if v != 0:
+            container[translation[k]] = v
+
+    if container["container"] == 0 and container["tank"] == 0 and container["place"] == 0:
+        ret = await add_garbage(point["address"],
+                                point["lat"],
+                                point["lon"],
+                                current_time,
+                                photo,
+                                'have' if prediction["garbage"] or prediction["large_garbage"] else 'solve')
+    else:
+        ret = await add_point_information(
+            point['address'],
+            point['lat'],
+            point['lon'],
+            point1['problems'],
+            json.dumps(container),
+            current_time,
+            photo,
+            prediction["garbage"] + prediction["Large"],
+            'bad' if prediction["garbage"] or prediction["overflow"] or prediction["Large"] else ''
+        )
     if not ret:
         raise HTTPException(status_code=418, detail="i am a teapot ;)")
     return "succes"
@@ -165,6 +203,7 @@ def create_docx(data):
 
 report_router = APIRouter()
 
+
 class ReportToday(BaseModel):
     lat: str
     lon: str
@@ -172,13 +211,37 @@ class ReportToday(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
+
+import base64
+from io import BytesIO
+
+
+def decode_base64_to_image(base64_string):
+    return base64.b64decode(base64_string)
+
+
+def add_image_to_docx(doc, base64_image_string):
+    image_bytes = decode_base64_to_image(base64_image_string)
+
+    # Используем BytesIO, чтобы работать с байтами как с файлом
+    image_stream = BytesIO(image_bytes)
+    from docx.shared import Inches
+    # Добавляем картинку в документ
+    doc.add_picture(image_stream, width=Inches(2.3), height=Inches(2.3))
+
+
 async def create_file(lat, lon):
     data = await get_report_today(lat, lon)
     doc = Document()
     # Добавляем заголовок
-    doc.add_heading('Отчет по контейнерной площадке', 0)
-    # Добавляем информацию в документ
-    doc.add_paragraph(f"Контейнерная площадка: {data['containers']['Place']}")
+    doc.add_heading(f'Отчет по контейнерной площадке ({lat},  {lon})', 0)
+    doc.add_paragraph(f"Фото до ")
+    add_image_to_docx(doc, data["photo_1"])
+    if data["photo_2"]:
+        doc.add_paragraph(f"Фото после ")
+        add_image_to_docx(doc, data["photo_2"])
+    doc.add_paragraph(f"Адрес контейнерной площадки: {data['address']}")
+    doc.add_paragraph(f"Контейнерная площадка включает: {data['containers']['Place']}")
     doc.add_paragraph(f"Количество контейнеров на площадке: {data['containers']['Container']}")
     doc.add_paragraph(f"Количество мусора вне контейнера: {data['other_trash']}")
     doc.add_paragraph(f"Статус контейнерной площадки: {data['status']}")
@@ -210,10 +273,41 @@ class ReportPeriod(BaseModel):
         arbitrary_types_allowed = True
 
 
-@report_router.get("/period")
+@report_router.post("/period")
 async def get_period(data: ReportPeriod):
     data = data.dict()
-    db_data = await get_report_period(data["lat"], data["lon"], data["ts_1"], data["ts_2"])
+    doc = Document()
+    # Добавляем заголовок
+    doc.add_heading(f'Отчет по контейнерной площадке ({data["lat"]},  {data["lon"]})', 0)
+    ts1 = (datetime.strptime(data["ts_1"], "%Y-%m-%d %H:%M:%S")).date()
+    ts2 = (datetime.strptime(data["ts_2"], "%Y-%m-%d %H:%M:%S")).date()
+
+    while ts1 != ts2 + timedelta(days=1):
+        doc.add_heading(f'Отчет за {ts1}', 1)
+        db_data = await get_report_in_day(data["lat"], data["lon"], ts1)
+
+        doc.add_paragraph(f"Фото до ")
+        add_image_to_docx(doc, db_data["photo_1"])
+        if db_data["photo_2"]:
+            doc.add_paragraph(f"Фото после ")
+            add_image_to_docx(doc, db_data["photo_2"])
+        doc.add_paragraph(f"Адрес контейнерной площадки: {db_data['address']}")
+        doc.add_paragraph(f"Контейнерная площадка включает: {db_data['containers']['Place']}")
+        doc.add_paragraph(f"Количество контейнеров на площадке: {db_data['containers']['Container']}")
+        doc.add_paragraph(f"Количество мусора вне контейнера: {db_data['other_trash']}")
+        doc.add_paragraph(f"Статус контейнерной площадки: {db_data['status']}")
+
+        ts1 += timedelta(days=1)
+    unique_filename = f"{uuid.uuid4().hex}_report.docx"
+    os.getcwd()
+    temp_file = os.path.join("temp")
+    file_path = os.path.join(temp_file, unique_filename)
+    doc.save(file_path)
+    if not file_path:
+        raise HTTPException(status_code=404, detail="Can not generate file")
+
+    return FileResponse(path=file_path, filename='Отчет.docx', media_type='multipart/form-data')
+
 
 app.include_router(report_router, prefix="/report", tags=["report"])
 
@@ -253,6 +347,7 @@ async def get_statistic(data: StatisticData):
 
     return statics
 
+
 @statistic_router.post("solve")
 async def get_statistic(data: StatisticData):
     data = data.dict()
@@ -261,8 +356,8 @@ async def get_statistic(data: StatisticData):
     ts2 = (datetime.strptime(data["ts_2"], "%Y-%m-%d %H:%M:%S")).date()
 
     statics = {
-            "error": 0,
-            "solve": 0,
+        "error": 0,
+        "solve": 0,
     }
 
     while ts1 != ts2 + timedelta(days=1):
@@ -273,5 +368,5 @@ async def get_statistic(data: StatisticData):
 
     return statics
 
-app.include_router(statistic_router, prefix="/statistic", tags=["statistic"])
 
+app.include_router(statistic_router, prefix="/statistic", tags=["statistic"])
