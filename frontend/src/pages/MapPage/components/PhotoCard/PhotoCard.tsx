@@ -14,7 +14,7 @@ export const PhotoCard = () => {
 				display: 'flex',
 				flexDirection: 'column',
 				py: 2,
-				boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)'
+				boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.16)',
 			}}
 		>
 			<Box

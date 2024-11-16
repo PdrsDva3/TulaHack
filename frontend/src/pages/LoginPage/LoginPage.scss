@@ -120,12 +120,11 @@
 	right: 35%;
 }
 
-
 .line_wrap {
 	position: absolute;
 	top: 10%;
 	display: flex;
-	align-items:  center;
+	align-items: center;
 	flex-direction: column;
 
 	z-index: 3;
@@ -138,10 +137,7 @@
 		width: 100px;
 		opacity: 0;
 	}
-	to{
+	to {
 		width: 100%;
 	}
 }
-
-
-

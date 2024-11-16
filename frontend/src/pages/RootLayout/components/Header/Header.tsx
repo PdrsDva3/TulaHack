@@ -25,25 +25,17 @@ export const Header: FC = () => {
 				<ArrowIcon color="common.black" fill="common.black" />
 			</Button>
 
-
-		<Toolbar
-			sx={{display:'flex', gap:10}}
-		>
-			<NavLink to="/calendar" >
-				<Box
-					sx={{display:'flex', gap:4, alignItems:'center'}}
-				>
-					<SvgIcon fontSize="medium">
-						<CalendarMonthOutlinedIcon  sx={{color:'secondary.dark'}}/>
-					</SvgIcon>
-					<Typography
-						variant='h3'
-						sx={{color:"secondary.dark"}}
-					>
-						Календарь отчетов
-					</Typography>
-				</Box>
-			</NavLink>
+			<Toolbar sx={{ display: 'flex', gap: 10 }}>
+				<NavLink to="/calendar">
+					<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+						<SvgIcon fontSize="medium">
+							<CalendarMonthOutlinedIcon sx={{ color: 'secondary.dark' }} />
+						</SvgIcon>
+						<Typography variant="h3" sx={{ color: 'secondary.dark' }}>
+							Календарь отчетов
+						</Typography>
+					</Box>
+				</NavLink>
 
 				<NavLink to="/monitoring">
 					<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
@@ -56,22 +48,17 @@ export const Header: FC = () => {
 					</Box>
 				</NavLink>
 
-			<NavLink to='/statistic'>
-				<Box
-					sx={{display:'flex', gap:4, alignItems:'center'}}
-				>
-					<SvgIcon fontSize="medium">
-						<LeaderboardOutlined  sx={{color:'secondary.dark'}}/>
-					</SvgIcon>
-					<Typography
-						variant='h3'
-						sx={{color:"secondary.dark"}}
-					>
-						Статистика
-					</Typography>
-				</Box>
-			</NavLink>
-		</Toolbar>
+				<NavLink to="/statistic">
+					<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+						<SvgIcon fontSize="medium">
+							<LeaderboardOutlined sx={{ color: 'secondary.dark' }} />
+						</SvgIcon>
+						<Typography variant="h3" sx={{ color: 'secondary.dark' }}>
+							Статистика
+						</Typography>
+					</Box>
+				</NavLink>
+			</Toolbar>
 
 			<Button
 				variant="text"

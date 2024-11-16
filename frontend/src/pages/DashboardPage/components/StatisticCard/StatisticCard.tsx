@@ -34,7 +34,7 @@ export const StatisticCard = () => {
 					alignItems: 'center',
 					cursor: 'pointer',
 				}}
-				onClick={() => navigate('/statistics')}
+				onClick={() => navigate('/statistic')}
 			>
 				<Box
 					sx={{

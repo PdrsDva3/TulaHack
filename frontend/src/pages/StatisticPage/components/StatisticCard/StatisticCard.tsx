@@ -1,9 +1,5 @@
-import { Container } from "@mui/material"
+import { Container } from '@mui/material';
 
 export const StatisticCArd = () => {
-	return(
-		<Container>
-
-		</Container>
-	)
-}
+	return <Container></Container>;
+};
