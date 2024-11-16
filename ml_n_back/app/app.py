@@ -176,9 +176,16 @@ async def create_user_h(data: RegUsr):
     return user_id[0]
 
 
+class LogUsr(BaseModel):
+    email: str
+    password: str
+
+    class Config:
+        arbitrary_types_allowed = True
+
 @user_router.post("/login")
-async def login_user_h(email: str, password: str):
-    user_id = await login_user(email, password)
+async def login_user_h(data: LogUsr):
+    user_id = await login_user(data["email"], data["password"])
     if user_id is None:
         raise HTTPException(status_code=404, detail="Invalid login or password")
     return user_id
