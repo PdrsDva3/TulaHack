@@ -1,7 +1,19 @@
-import { Box, Chip, Container, Divider, Typography } from '@mui/material';
-import { DowloadButton } from '../../../../components/DowloadButton/DowloadButton';
+import { Box, Button, Chip, Container, Divider, Typography } from '@mui/material';
+// import { DowloadButton } from '../../../../components/DowloadButton/DowloadButton';
+import { api } from '../../../../api/api.ts';
+import dowload from '../../../../assets/svg/dowload.svg';
 
 export const InfoCard = () => {
+	const lat:string = '2';
+	const lon:string = '2';
+
+	const btnClick = (lat:string, lon:string) => {
+		api.post('report/today', {
+			lat,
+			lon
+		}).then(res => console.log(res))
+	}
+
 	return (
 		<Container
 			sx={{
@@ -29,7 +41,21 @@ export const InfoCard = () => {
 					color="primary"
 					sx={{ borderRadius: '5px' }}
 				/>
-				<DowloadButton />
+				<Button
+					sx={{
+						backgroundColor: 'common.white',
+						borderRadius: '10px',
+						display: 'flex',
+						gap: 2,
+						justifyContent: 'center',
+					}}
+					onClick={() => btnClick(lat, lon)}
+				>
+					<img src={dowload} />
+					<Typography variant="h5" color="common.black">
+						Скачать последний отчет
+					</Typography>
+				</Button>
 			</Box>
 
 			<Box

@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type ValidationError = {
-    loc: Array<(string | number)>;
-    msg: string;
-    type: string;
+export type RegUsr = {
+    email: string;
+    password: string;
+    name: string;
 };
 
