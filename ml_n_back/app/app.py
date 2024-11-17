@@ -1,6 +1,7 @@
 import json
 import time
 from datetime import datetime, timedelta
+from gettext import translation
 
 from docx import Document
 from fastapi import FastAPI, HTTPException, APIRouter
@@ -52,6 +53,7 @@ async def get_point_info(point_id: int):
     if not point:
         raise HTTPException(status_code=404, detail="Invalid ID")
     return point
+
 
 @points_router.get("/garbage/{garbage_id}")
 async def get_point_info(garbage_id: int):
@@ -184,6 +186,7 @@ class LogUsr(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
+
 @user_router.post("/login")
 async def login_user_h(data: LogUsr):
     data = data.dict()
@@ -239,6 +242,22 @@ def add_image_to_docx(doc, base64_image_string):
     doc.add_picture(image_stream, width=Inches(2.3), height=Inches(2.3))
 
 
+c_translation = {"place": "Количество контейнерных площадок: ",
+                 "container": "Количество контейнеров: ",
+                 "overflow_container": "Из них переполненны: ",
+                 "tank": "Количество баков: ",
+                 "garbage": "Количество ненадлежащего мусора: ",
+                 "large_garbage": "Количество большого ненадлежащего мусора: "
+                 }
+
+s_translation = {"in_process": "В процессе обработки",
+                 "bad": "Есть проблема",
+                 "see": "Всё в порядке",
+                 "no_see": "Посещения КП с прошлого раза пока не было",
+                 "old": "КП не посещалась более трех дней"
+                 }
+
+
 async def create_file(lat, lon):
     data = await get_report_today(lat, lon)
     doc = Document()
@@ -250,10 +269,11 @@ async def create_file(lat, lon):
         doc.add_paragraph(f"Фото после ")
         add_image_to_docx(doc, data["photo_2"])
     doc.add_paragraph(f"Адрес контейнерной площадки: {data['address']}")
-    doc.add_paragraph(f"Контейнерная площадка включает: {data['containers']['Place']}")
-    doc.add_paragraph(f"Количество контейнеров на площадке: {data['containers']['Container']}")
+    doc.add_paragraph("Информация по площадке:")
+    for k, v in data["containers"].items():
+        doc.add_paragraph(f"    {c_translation[k]} {v}")
     doc.add_paragraph(f"Количество мусора вне контейнера: {data['other_trash']}")
-    doc.add_paragraph(f"Статус контейнерной площадки: {data['status']}")
+    doc.add_paragraph(f"Статус контейнерной площадки: {s_translation[data['status']]}")
     unique_filename = f"{uuid.uuid4().hex}_report.docx"
     os.getcwd()
     temp_file = os.path.join("temp")
@@ -301,10 +321,10 @@ async def get_period(data: ReportPeriod):
             doc.add_paragraph(f"Фото после ")
             add_image_to_docx(doc, db_data["photo_2"])
         doc.add_paragraph(f"Адрес контейнерной площадки: {db_data['address']}")
-        doc.add_paragraph(f"Контейнерная площадка включает: {db_data['containers']['Place']}")
-        doc.add_paragraph(f"Количество контейнеров на площадке: {db_data['containers']['Container']}")
+        for k, v in db_data["containers"].items():
+            doc.add_paragraph(f"    {c_translation[k]} {v}")
         doc.add_paragraph(f"Количество мусора вне контейнера: {db_data['other_trash']}")
-        doc.add_paragraph(f"Статус контейнерной площадки: {db_data['status']}")
+        doc.add_paragraph(f"Статус контейнерной площадки: {s_translation[db_data['status']]}")
 
         ts1 += timedelta(days=1)
     unique_filename = f"{uuid.uuid4().hex}_report.docx"
