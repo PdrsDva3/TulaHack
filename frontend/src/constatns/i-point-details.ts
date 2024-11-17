@@ -6,8 +6,8 @@ export interface PointDetails {
 	last_ts: string;
 	problems: string;
 	containers: {
-		Place: number;
-		Container: number;
+		place: number;
+		container: number;
 	};
 	ts_1: string;
 	ts_2: string;

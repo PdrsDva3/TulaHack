@@ -158,7 +158,7 @@ export const CalendarPage: FC = () => {
 				>
 					<YandexMap
 						center={[54.1921, 37.6156]}
-						zoom={10}
+						zoom={14}
 						apiEndpoint="point/all"
 					></YandexMap>
 				</Box>

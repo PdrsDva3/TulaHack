@@ -1,0 +1,17 @@
+:80 {
+	encode gzip
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+	handle /ml/* {
+	   reverse_proxy ml_app:6969
+	}
+	handle {
+		root * /app/dist
+		try_files {path} /index.html
+		file_server
+	}
+	handle_errors {
+		respond "{err.status_code} {err.status_text}"
+	}
+}

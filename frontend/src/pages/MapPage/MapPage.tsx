@@ -87,7 +87,7 @@ export const MapPage: FC = () => {
 			<Grid2 size={6}>
 				<YandexMap
 					center={[54.1921, 37.6156]}
-					zoom={10}
+					zoom={14}
 					apiEndpoint="point/all"
 					onMarkerClick={handleMarkerClick}
 					onLoadingChange={handleLoadingChange}
