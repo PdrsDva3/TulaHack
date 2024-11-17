@@ -9,8 +9,8 @@ interface InfoCardProps {
 	lon: string;
 	problems: string;
 	containers: {
-		Place: number;
-		Container: number;
+		place: number;
+		container: number;
 	};
 	ts_2: string;
 	isGarbage: boolean;
@@ -138,9 +138,9 @@ export const InfoCard: React.FC<InfoCardProps> = ({
 				sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center', gap: 5 }}
 			>
 				<Typography variant="h4">Контейнеры:</Typography>
-				{containers.Container ? (
+				{containers.container ? (
 					<Typography variant="h5" sx={{ color: 'secondary.dark' }}>
-						{containers.Container} шт.
+						{containers.container} шт.
 					</Typography>
 				) : (
 					<Typography variant="h5" sx={{ color: 'secondary.dark' }}>
