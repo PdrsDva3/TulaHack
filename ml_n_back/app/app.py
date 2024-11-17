@@ -9,13 +9,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, \
     get_point_by_coordinates, get_user, login_user, get_statistic_container, get_statistic_container_solve, \
-    get_report_in_day, add_garbage, get_garbage_information_by_id, get_statistic_solve
+    get_report_in_day, add_garbage, get_garbage_information_by_id, get_statistic_solve, add_tg_user
 from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, \
     get_point_by_coordinates, get_user, login_user, get_report_today
 
 import os
 import uuid
 from fastapi.responses import FileResponse
+
 
 app = FastAPI()
 
