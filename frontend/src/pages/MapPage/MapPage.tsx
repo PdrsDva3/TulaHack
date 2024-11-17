@@ -63,7 +63,7 @@ export const MapPage: FC = () => {
 
 				<Grid2 size={2}>
 					<Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-						<SvgIcon sx={{ color: 'red' }}>
+						<SvgIcon sx={{ color: '#FF0303' }}>
 							<Brightness1Icon />
 						</SvgIcon>
 						<Typography variant="h6" color="secondary.dark" width="10vw">

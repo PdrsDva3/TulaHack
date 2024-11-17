@@ -53,22 +53,13 @@ export const LoginPage: FC = () => {
 		<section className="login">
 			<div className="main_wrapper">
 				<div className="line_wrap">
-					<img src={one} className="one" />
-					<img src={two} className="two" />
-					<img src={three} className="three" />
-					<img src={four} className="four" />
-					<img src={five} className="five" />
-					<img src={six} className="six" />
-					<img src={seven} className="seven" />
-					<img src={eight} className="eight" />
-					<img src={nine} className="nine" />
 					<img src={left_grey_house} className="left_grey_house" />
 					<img src={left_white_house} className="left_white_house" />
 					<img src={left_grey_window} className="left_grey_window" />
 					<img src={left_orange_house} className="left_orange_house" />
 					<img src={left_orange_window} className="left_orange_window" />
 					<img src={left_white_window} className="left_white_window" />
-					<img src={line} className="line" />
+					<img src={line} className="line11" />
 					<img src={line} className="line1" />
 					<img src={right_grey_house} className="right_grey_house" />
 					<img src={right_grey_window} className="right_grey_window" />
@@ -77,6 +68,17 @@ export const LoginPage: FC = () => {
 					<img src={right_white_window} className="right_white_window" />
 					<img src={right_white} className="right_white box-shadow" />
 				</div>
+			</div>
+			<div>
+			<img src={one} className="one" />
+				<img src={two} className="two" />
+				<img src={three} className="three" />
+				<img src={four} className="four" />
+				<img src={five} className="five" />
+				<img src={six} className="six" />
+				<img src={seven} className="seven" />
+				<img src={eight} className="eight" />
+				<img src={nine} className="nine" />
 			</div>
 			<FormControl
 				className="login_form box-shadow"

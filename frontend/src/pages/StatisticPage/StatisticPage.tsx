@@ -11,11 +11,11 @@ export const StatisticPage: FC = () => {
 	const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs('2024-04-17'));
 	const [toDate, setToDate] = useState<Dayjs | null>(dayjs('2024-04-18'));
 
-	const paletteGarbage = ['green', 'orange', 'red'];
+	const paletteGarbage = ['#008000', '#FFA500', '#FF0303'];
 
 	const paletteTrash = ['blue', 'lightblue', 'white'];
 
-	const paletteProblem = ['lightgreen', 'red', 'white'];
+	const paletteProblem = ['#85E551', '#E55151', 'white'];
 
 	const descGarbage = ['Вывезено', 'Есть проблемы', 'Не вывезено'];
 

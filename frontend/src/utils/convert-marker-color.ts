@@ -5,11 +5,11 @@ export const convertMarkerColor = (problems: string): string => {
 		case 'old':
 			return '#FF0303';
 		case 'in_process':
-			return '#F47544';
+			return '#FFA500';
 		case 'no_see':
-			return '#F47544';
+			return '#FFA500';
 		case 'see':
-			return '#33A200';
+			return '#008000';
 		default:
 			return '#989898';
 	}
