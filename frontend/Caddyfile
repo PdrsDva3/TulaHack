@@ -7,7 +7,7 @@
 	   reverse_proxy ml_app:6969
 	}
 	handle {
-		root * /app/dist
+		root * /app/build
 		try_files {path} /index.html
 		file_server
 	}
