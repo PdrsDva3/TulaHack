@@ -31,7 +31,7 @@
 }
 
 @keyframes left_grey_house {
-	from{
+	from {
 		opacity: 0;
 		height: 5px;
 	}
@@ -51,7 +51,7 @@
 }
 
 @keyframes left_white_house {
-	from{
+	from {
 		opacity: 0;
 		height: 5px;
 	}
@@ -71,7 +71,7 @@
 }
 
 @keyframes left_grey_window {
-	from{
+	from {
 		opacity: 0;
 		height: 0;
 	}
@@ -92,7 +92,7 @@
 }
 
 @keyframes left_orange_house {
-	from{
+	from {
 		opacity: 0;
 		height: 5px;
 	}
@@ -113,7 +113,7 @@
 }
 
 @keyframes left_orange_window {
-	from{
+	from {
 		opacity: 0;
 		height: 0;
 	}
@@ -133,7 +133,7 @@
 }
 
 @keyframes left_white_window {
-	from{
+	from {
 		opacity: 0;
 		height: 0;
 	}
@@ -153,7 +153,7 @@
 }
 
 @keyframes line11 {
-	from{
+	from {
 		opacity: 0;
 		height: 0;
 	}
@@ -173,7 +173,7 @@
 }
 
 @keyframes line1 {
-	from{
+	from {
 		opacity: 0;
 		height: 0;
 	}
@@ -193,7 +193,7 @@
 }
 
 @keyframes right_grey_house {
-	from{
+	from {
 		opacity: 0;
 		height: 5px;
 	}
@@ -213,7 +213,7 @@
 }
 
 @keyframes right_grey_window {
-	from{
+	from {
 		opacity: 0;
 		height: 0;
 	}
@@ -233,7 +233,7 @@
 }
 
 @keyframes right_orange {
-	from{
+	from {
 		opacity: 0;
 		height: 5px;
 	}
@@ -253,7 +253,7 @@
 }
 
 @keyframes right_white_house {
-	from{
+	from {
 		opacity: 0;
 		height: 5px;
 	}
@@ -267,13 +267,13 @@
 	position: absolute;
 	bottom: 8%;
 	right: 25%;
-	z-index: 60	;
+	z-index: 60;
 	animation-duration: 1500ms;
 	animation-name: right_white_window;
 }
 
 @keyframes right_white_window {
-	from{
+	from {
 		opacity: 0;
 		height: 0;
 	}
@@ -293,7 +293,7 @@
 }
 
 @keyframes right_white {
-	from{
+	from {
 		opacity: 0;
 		height: 5px;
 	}
@@ -361,11 +361,11 @@
 }
 
 @keyframes two {
-	from{
+	from {
 		right: 70%;
 		opacity: 0;
 	}
-	to{
+	to {
 		right: 50%;
 		opacity: 100%;
 	}
@@ -382,12 +382,12 @@
 }
 
 @keyframes three {
-	from{
+	from {
 		right: 70%;
 		opacity: 0;
 		width: 10px;
 	}
-	to{
+	to {
 		right: 50%;
 		opacity: 100%;
 		width: 1027px;
@@ -405,12 +405,12 @@
 }
 
 @keyframes four {
-	from{
+	from {
 		right: 70%;
 		opacity: 0;
 		width: 10px;
 	}
-	to{
+	to {
 		right: 50%;
 		opacity: 100%;
 		width: 789px;
@@ -428,12 +428,12 @@
 }
 
 @keyframes five {
-	from{
+	from {
 		right: 70%;
 		opacity: 0;
 		width: 10px;
 	}
-	to{
+	to {
 		right: 50%;
 		opacity: 100%;
 		width: 1170px;
@@ -451,11 +451,11 @@
 }
 
 @keyframes six {
-	from{
+	from {
 		opacity: 0;
 		width: 5px;
 	}
-	to{
+	to {
 		opacity: 100%;
 		width: 399px;
 	}
@@ -472,12 +472,12 @@
 }
 
 @keyframes seven {
-	from{
+	from {
 		right: 70%;
 		opacity: 0;
 		width: 0;
 	}
-	to{
+	to {
 		right: 50%;
 		opacity: 100%;
 		width: 1104px;
@@ -495,11 +495,11 @@
 }
 
 @keyframes eight {
-	from{
+	from {
 		opacity: 0;
 		width: 10px;
 	}
-	to{
+	to {
 		opacity: 100%;
 		width: 399px;
 	}
@@ -517,11 +517,11 @@
 }
 
 @keyframes nine {
-	from{
+	from {
 		opacity: 0;
 		width: 10px;
 	}
-	to{
+	to {
 		opacity: 100%;
 		width: 1020px;
 	}

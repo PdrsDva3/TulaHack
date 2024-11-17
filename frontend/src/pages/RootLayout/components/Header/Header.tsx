@@ -19,14 +19,14 @@ export const Header: FC = () => {
 				flexDirection: 'row',
 				justifyContent: 'space-around',
 				alignItems: 'center',
-				py:1
+				py: 1,
 			}}
 		>
 			<Button variant="text" sx={{ color: 'common.black' }} onClick={() => navigate('/')}>
 				<House />
 			</Button>
 
-			<Box sx={{ display: 'flex', gap: 10 , py:1}}>
+			<Box sx={{ display: 'flex', gap: 10, py: 1 }}>
 				<NavLink to="/monitoring">
 					{({ isActive }) => (
 						<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>

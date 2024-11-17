@@ -1,33 +1,120 @@
 import { DatePicker } from '@mui/x-date-pickers';
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Box, Chip, Container } from '@mui/material';
 import { StatisticCard } from './components';
+import axios from 'axios';
+import { calculateLightDay } from '../../utils';
+import { StatisticDescription, StatisticPalette } from '../../constatns';
 
 export const StatisticPage: FC = () => {
 	const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs('2024-11-16'));
 	const [toDate, setToDate] = useState<Dayjs | null>(dayjs('2024-11-17'));
 
-	const paletteGarbage = ['#008000', '#FFA500', '#FF0303'];
+	const [trashStatsToday, setTrashStatsToday] = useState([0, 0, 0]);
+	const [garbageStatsToday, setGarbageStatsToday] = useState([0, 0]);
+	const [problemStatsToday, setProblemStatsToday] = useState([0, 0]);
 
-	const paletteTrash = ['blue', 'lightblue', 'white'];
+	const [trashStats, setTrashStats] = useState([0, 0, 0]);
+	const [garbageStats, setGarbageStats] = useState([0, 0]);
+	const [problemStats, setProblemStats] = useState([0, 0]);
 
-	const paletteProblem = ['#85E551', '#E55151', 'white'];
+	const fetchTodayStats = async () => {
+		const { startOfDay, endOfDay } = calculateLightDay();
+		const payload = {
+			ts_1: startOfDay.format('YYYY-MM-DD HH:mm:ss'),
+			ts_2: endOfDay.format('YYYY-MM-DD HH:mm:ss'),
+		};
 
-	const descGarbage = ['Вывезено', 'Есть проблемы', 'Не вывезено'];
+		try {
+			const trashResponse = await axios.post(
+				'http://82.97.249.28:8000/statisticcontainer',
+				payload,
+			);
+			// const garbageResponse = await axios.post('http://82.97.249.28:8000/statisticgarbage', payload);
+			const problemResponse = await axios.post(
+				'http://82.97.249.28:8000/statisticsolve',
+				payload,
+			);
 
-	const descTrash = ['Ликвидированно', 'Не ликвидированно'];
+			const { see, bad, no_see } = trashResponse.data;
+			// const { handled, not_handled } = garbageResponse.data;
+			const { error, solve } = problemResponse.data;
 
-	const descProblem = ['Решено', 'Не решено'];
+			setTrashStatsToday([see, bad, no_see]);
+			// setGarbageStatsToday([handled, not_handled]);
+			setProblemStatsToday([error, solve]);
+		} catch (error) {
+			console.error('Ошибка при загрузке статистики для светового дня:', error);
+		}
+	};
+
+	useEffect(() => {
+		// Fetch stats for the current light day on component mount
+		fetchTodayStats();
+	}, []);
+
+	useEffect(() => {
+		if (!fromDate || !toDate) return;
+
+		const payload = {
+			ts_1: fromDate.format('YYYY-MM-DD HH:mm:ss'),
+			ts_2: toDate.format('YYYY-MM-DD HH:mm:ss'),
+		};
+
+		// Fetch stats for the selected period
+		fetchTrashStats(payload);
+		// fetchGarbageStats(payload);
+		fetchProblemStats(payload);
+	}, [fromDate, toDate]);
+
+	const fetchTrashStats = async (payload: { ts_1: string; ts_2: string }) => {
+		try {
+			const response = await axios.post(
+				'http://82.97.249.28:8000/statisticcontainer',
+				payload,
+			);
+			const { see, bad, no_see } = response.data;
+			setTrashStats([see, bad, no_see]);
+		} catch (error) {
+			console.error('Ошибка при загрузке статистики для контейнеров:', error);
+		}
+	};
+
+	const fetchGarbageStats = async (payload: { ts_1: string; ts_2: string }) => {
+		try {
+			const response = await axios.post(
+				'http://82.97.249.28:8000/statisticgarbage',
+				payload,
+			);
+			const { handled, not_handled } = response.data;
+			setGarbageStats([handled, not_handled]);
+		} catch (error) {
+			console.error('Ошибка при загрузке статистики для свалок:', error);
+		}
+	};
+
+	const fetchProblemStats = async (payload: { ts_1: string; ts_2: string }) => {
+		try {
+			const response = await axios.post(
+				'http://82.97.249.28:8000/statisticsolve',
+				payload,
+			);
+			const { error, solve } = response.data;
+			setProblemStats([error, solve]);
+		} catch (error) {
+			console.error('Ошибка при загрузке статистики для проблем:', error);
+		}
+	};
 
 	return (
 		<Box sx={{ display: 'flex', gap: 6, pt: 12 }}>
 			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
 				<Chip
-					label="Статистика на текущий момент 17.11.24"
+					label="Статистика за световой день"
 					sx={{
 						backgroundColor: 'common.white',
 						borderRadius: '10px',
@@ -40,47 +127,40 @@ export const StatisticPage: FC = () => {
 					title="Контейнерные площадки:"
 					series={[
 						{
-							data: [
-								{ id: 0, value: 10 },
-								{ id: 1, value: 15 },
-								{ id: 2, value: 20 },
-							],
+							data: trashStatsToday.map((value, id) => ({ id, value })),
 							outerRadius: 60,
 							innerRadius: 30,
 						},
 					]}
-					palette={paletteGarbage}
-					desc={descGarbage}
+					palette={StatisticPalette.trash}
+					desc={StatisticDescription.trash}
+					data={trashStatsToday.map((value, id) => ({ id, value }))}
 				/>
 				<StatisticCard
-					title={'Несанкционированной свалки:'}
+					title="Несанкционированные свалки:"
 					series={[
 						{
-							data: [
-								{ id: 0, value: 10 },
-								{ id: 1, value: 15 },
-							],
+							data: garbageStatsToday.map((value, id) => ({ id, value })),
 							outerRadius: 60,
 							innerRadius: 30,
 						},
 					]}
-					palette={paletteTrash}
-					desc={descTrash}
+					palette={StatisticPalette.garbage}
+					desc={StatisticDescription.garbage}
+					data={garbageStatsToday.map((value, id) => ({ id, value }))}
 				/>
 				<StatisticCard
-					title={'Выявленные проблемы:'}
+					title="Выявленные проблемы:"
 					series={[
 						{
-							data: [
-								{ id: 0, value: 10 },
-								{ id: 1, value: 15 },
-							],
+							data: problemStatsToday.map((value, id) => ({ id, value })),
 							outerRadius: 60,
 							innerRadius: 30,
 						},
 					]}
-					palette={paletteProblem}
-					desc={descProblem}
+					palette={StatisticPalette.problem}
+					desc={StatisticDescription.problem}
+					data={problemStatsToday.map((value, id) => ({ id, value }))}
 				/>
 			</Box>
 			<Container sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -94,73 +174,64 @@ export const StatisticPage: FC = () => {
 					}}
 					component="h1"
 				/>
-
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
 					<DemoContainer
 						components={['DatePicker', 'DatePicker']}
 						sx={{ backgroundColor: 'common.white', p: 2, borderRadius: '10px' }}
 					>
 						<DatePicker
-							label="Выберите дату"
+							label="Выберите дату от"
 							value={fromDate}
 							onChange={(newValue) => setFromDate(newValue)}
 						/>
 						<DatePicker
-							label="Выберите дату"
+							label="Выберите дату до"
 							value={toDate}
 							onChange={(newValue) => setToDate(newValue)}
 						/>
 					</DemoContainer>
 				</LocalizationProvider>
-
-				<StatisticCard
-					title="Сосотояние КП в период 16.11.24-17.11.24:"
-					series={[
-						{
-							data: [
-								{ id: 0, value: 10 },
-								{ id: 1, value: 15 },
-								{ id: 2, value: 20 },
-							],
-							outerRadius: 60,
-							innerRadius: 30,
-						},
-					]}
-					palette={paletteGarbage}
-					desc={descGarbage}
-				/>
-
-				<StatisticCard
-					title="Несанкционированные свалки 16.11.24-17.11.24:"
-					series={[
-						{
-							data: [
-								{ id: 0, value: 10 },
-								{ id: 1, value: 15 },
-							],
-							outerRadius: 60,
-							innerRadius: 30,
-						},
-					]}
-					palette={paletteTrash}
-					desc={descTrash}
-				/>
-
-				<StatisticCard
-					title="Выявленные проблемы в период 16.11.24-17.11.24:"
-					series={[
-						{
-							data: [
-								{ id: 0, value: 10 },
-								{ id: 1, value: 15 },
-							],
-							outerRadius: 60,
-							innerRadius: 30,
-						},
-					]}
-					palette={paletteProblem}
-					desc={descProblem}
-				/>
+				<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+					<StatisticCard
+						title="Контейнерные площадки:"
+						series={[
+							{
+								data: trashStats.map((value, id) => ({ id, value })),
+								outerRadius: 60,
+								innerRadius: 30,
+							},
+						]}
+						palette={StatisticPalette.trash}
+						desc={StatisticDescription.trash}
+						data={trashStats.map((value, id) => ({ id, value }))}
+					/>
+					<StatisticCard
+						title="Несанкционированные свалки:"
+						series={[
+							{
+								data: garbageStats.map((value, id) => ({ id, value })),
+								outerRadius: 60,
+								innerRadius: 30,
+							},
+						]}
+						palette={StatisticPalette.garbage}
+						desc={StatisticDescription.garbage}
+						data={garbageStats.map((value, id) => ({ id, value }))}
+					/>
+					<StatisticCard
+						title="Выявленные проблемы:"
+						series={[
+							{
+								data: problemStats.map((value, id) => ({ id, value })),
+								outerRadius: 60,
+								innerRadius: 30,
+							},
+						]}
+						palette={StatisticPalette.problem}
+						desc={StatisticDescription.problem}
+						data={problemStats.map((value, id) => ({ id, value }))}
+					/>
+				</Box>
 			</Container>
 		</Box>
 	);

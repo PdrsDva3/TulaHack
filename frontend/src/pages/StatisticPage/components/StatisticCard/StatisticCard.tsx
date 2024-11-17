@@ -5,19 +5,15 @@ interface StatisticCardProps extends PieChartProps {
 	title: string;
 	palette: string[];
 	desc: string[];
+	data: { id: number; value: number }[]; // Данные диаграммы передаются через пропсы
 }
-
-const data = [
-	{ id: 0, value: 10 },
-	{ id: 1, value: 15 },
-	{ id: 2, value: 20 },
-];
 
 export const StatisticCard: React.FC<StatisticCardProps> = ({
 	title,
-	series,
 	palette,
 	desc,
+	data,
+	series,
 }) => {
 	return (
 		<Container
@@ -40,7 +36,13 @@ export const StatisticCard: React.FC<StatisticCardProps> = ({
 					<PieChart
 						sx={{ display: 'flex', justifyContent: 'center' }}
 						colors={palette}
-						series={series}
+						series={[
+							{
+								data, // Используем переданные данные
+								outerRadius: 60,
+								innerRadius: 30,
+							},
+						]}
 						slotProps={{
 							legend: { hidden: false },
 						}}
@@ -49,15 +51,16 @@ export const StatisticCard: React.FC<StatisticCardProps> = ({
 					/>
 				</Box>
 				<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-					{data.map((item, index) => {
-						return (
-							<Chip
-								key={index}
-								label={`${item.value} ${desc[index]}`}
-								sx={{ backgroundColor: palette[index], color: 'common.white' }}
-							/>
-						);
-					})}
+					{data.map((item, index) => (
+						<Chip
+							key={index}
+							label={`${item.value} ${desc[index] || ''}`} // Используем соответствующее описание
+							sx={{
+								backgroundColor: palette[index] || 'gray', // Цвета для каждого элемента
+								color: 'common.white',
+							}}
+						/>
+					))}
 				</Box>
 			</Box>
 		</Container>

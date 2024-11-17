@@ -70,7 +70,7 @@ export const LoginPage: FC = () => {
 				</div>
 			</div>
 			<div>
-			<img src={one} className="one" />
+				<img src={one} className="one" />
 				<img src={two} className="two" />
 				<img src={three} className="three" />
 				<img src={four} className="four" />
