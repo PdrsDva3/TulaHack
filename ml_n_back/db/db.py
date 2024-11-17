@@ -6,7 +6,21 @@ import psycopg2
 from psycopg2 import sql
 import logging
 
-from db.migration import db_connection, db_config
+import config
+# from db.migration import db_connection, db_config
+
+
+db_config = {
+    'dbname': config.DB_NAME,
+    'user': config.DB_USER,
+    'password': config.DB_PASSWORD,
+    'host': config.DB_HOST,
+    'port': config.DB_PORT,
+}
+
+
+def db_connection():
+    return psycopg2.connect(**db_config)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -253,6 +267,24 @@ WHERE id = %s;""")
             logger.info('Database connection closed.')
 
 
+from aiogram import Bot, Dispatcher
+from aiogram.types import Message, InputFile, FSInputFile, BufferedInputFile
+from aiogram.filters import Command
+from config import TOKEN_TG
+import base64
+import io
+
+bot = Bot(token=TOKEN_TG)
+dp = Dispatcher()
+
+
+@dp.message(Command("start"))
+async def start(message: Message):
+    await add_tg_user(message.from_user.id)
+    await message.answer(
+        "Привет, мы команда MISIS GoGoRiki😁\nМы будем отправлять тебе сообщения о появившемся несанкционированном мусоре")
+
+
 async def add_garbage(address, lat, lon, ts, photo, status):
     connection = db_connection()
     cursor = connection.cursor()
@@ -267,9 +299,27 @@ async def add_garbage(address, lat, lon, ts, photo, status):
             query = sql.SQL(
                 """INSERT INTO garbage (address, lat, lon, ts_1, ts_2,
                 photo_1, status)
-VALUES (%s, %s, %s, %s, %s, %s, %s);""")
+                VALUES (%s, %s, %s, %s, %s, %s, %s);""")
             cursor.execute(query,
                            (address, lat, lon, ts, ts, photo, status))
+
+            get_ids = sql.SQL("""SELECT id_tg
+                    FROM tg_users
+                    """)
+            cursor.execute(get_ids, (lat, lon))
+            ids = cursor.fetchall()
+
+            for id_tg in ids:
+                base64_image = photo
+                image_data = base64.b64decode(base64_image)
+
+                image_stream = io.BytesIO(image_data)
+
+                photo_tg = BufferedInputFile(image_stream.read(),
+                                             filename="image.png")  # Замените на правильное расширение
+
+                await bot.send_photo(chat_id=id_tg[0], photo=photo_tg, caption=f"По адресу {address} ({lat}, {lon})\nПоявилась несанкционированная свалка мусора {ts}\n\nНужно принять меры!")
+
         else:
             query = sql.SQL(
                 """update garbage
@@ -281,6 +331,7 @@ VALUES (%s, %s, %s, %s, %s, %s, %s);""")
 
         connection.commit()
         logger.info("Created successfully")
+
         return 1
     except (Exception, psycopg2.DatabaseError) as error:
         logger.error(error)
@@ -588,3 +639,36 @@ async def get_report_period(lat, lon, ts_1, ts_2):
             cursor.close()
             connection.close()
             logger.info('Database connection closed.')
+
+
+async def add_tg_user(id_tg):
+    connection = db_connection()
+    cursor = connection.cursor()
+
+    try:
+        get_all_users_query = sql.SQL("""
+            select id_tg from tg_users;
+            """)
+
+        cursor.execute(get_all_users_query)
+        usr_list = cursor.fetchall()
+        usrs = [i[0] for i in usr_list]
+
+        if id_tg not in usrs:
+            create_user_query = sql.SQL("""
+                INSERT INTO tg_users (id_tg) VALUES (%s)
+                """)
+            cursor.execute(create_user_query, (id_tg,))
+
+            connection.commit()
+            logger.info("Add tg user successfully")
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        logger.error(error)
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+            logger.info('Database connection closed.')
+
+add_tg_user(976008787)
