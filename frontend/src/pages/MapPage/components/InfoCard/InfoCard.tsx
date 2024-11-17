@@ -30,7 +30,10 @@ export const InfoCard: React.FC<InfoCardProps> = ({
 			// Отправляем запрос с JSON данными
 			const response = await axios.post(
 				'http://82.97.249.28:8000/report/today',
-				{ lat, lon },
+				{
+					lat: lat,
+					lon: lon,
+				},
 				{
 					headers: {
 						'x-device-id': 'stuff',
@@ -47,7 +50,7 @@ export const InfoCard: React.FC<InfoCardProps> = ({
 				const fileURL = URL.createObjectURL(file);
 				const a = document.createElement('a');
 				a.href = fileURL;
-				a.download = 'report.docx'; // Задаем имя файла для скачивания
+				a.download = `report_${Date.now()}.docx`; // Задаем имя файла для скачивания
 				a.click();
 			}
 		} catch (error) {

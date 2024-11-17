@@ -1,4 +1,4 @@
-import type * as YMaps from "yandex-maps";
+import type * as YMaps from 'yandex-maps';
 
 declare global {
 	interface Window {

@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { MapOutlined, LeaderboardOutlined } from '@mui/icons-material';
 import LogOut from '../../../../assets/svg/logout.svg?react';
 import House from '../../../../assets/svg/house.svg?react';
+import './Header.scss';
 
 export const Header: FC = () => {
 	const navigate = useNavigate();
@@ -27,36 +28,57 @@ export const Header: FC = () => {
 
 			<Toolbar sx={{ display: 'flex', gap: 10 }}>
 				<NavLink to="/monitoring">
-					<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-						<SvgIcon fontSize="medium">
-							<MapOutlined sx={{ color: 'secondary.dark' }} />
-						</SvgIcon>
-						<Typography variant="h3" sx={{ color: 'secondary.dark' }}>
-							Мониторинг
-						</Typography>
-					</Box>
+					{({ isActive }) => (
+						<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+							<SvgIcon fontSize="medium">
+								<MapOutlined
+									sx={{ color: isActive ? 'primary.main' : 'secondary.dark' }} // Меняем цвет
+								/>
+							</SvgIcon>
+							<Typography
+								variant="h3"
+								sx={{ color: isActive ? 'primary.main' : 'secondary.dark' }} // Меняем цвет
+							>
+								Мониторинг
+							</Typography>
+						</Box>
+					)}
 				</NavLink>
 
 				<NavLink to="/statistic">
-					<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-						<SvgIcon fontSize="medium">
-							<LeaderboardOutlined sx={{ color: 'secondary.dark' }} />
-						</SvgIcon>
-						<Typography variant="h3" sx={{ color: 'secondary.dark' }}>
-							Статистика
-						</Typography>
-					</Box>
+					{({ isActive }) => (
+						<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+							<SvgIcon fontSize="medium">
+								<LeaderboardOutlined
+									sx={{ color: isActive ? 'primary.main' : 'secondary.dark' }} // Меняем цвет
+								/>
+							</SvgIcon>
+							<Typography
+								variant="h3"
+								sx={{ color: isActive ? 'primary.main' : 'secondary.dark' }} // Меняем цвет
+							>
+								Статистика
+							</Typography>
+						</Box>
+					)}
 				</NavLink>
 
 				<NavLink to="/calendar">
-					<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-						<SvgIcon fontSize="medium">
-							<CalendarMonthOutlinedIcon sx={{ color: 'secondary.dark' }} />
-						</SvgIcon>
-						<Typography variant="h3" sx={{ color: 'secondary.dark' }}>
-							Календарь вывоза с КП
-						</Typography>
-					</Box>
+					{({ isActive }) => (
+						<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+							<SvgIcon fontSize="medium">
+								<CalendarMonthOutlinedIcon
+									sx={{ color: isActive ? 'primary.main' : 'secondary.dark' }} // Меняем цвет
+								/>
+							</SvgIcon>
+							<Typography
+								variant="h3"
+								sx={{ color: isActive ? 'primary.main' : 'secondary.dark' }} // Меняем цвет
+							>
+								Календарь вывоза с КП
+							</Typography>
+						</Box>
+					)}
 				</NavLink>
 			</Toolbar>
 

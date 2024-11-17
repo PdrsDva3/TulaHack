@@ -96,7 +96,10 @@ export const StatisticPage: FC = () => {
 				/>
 
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
-					<DemoContainer components={['DatePicker', 'DatePicker']} sx={{backgroundColor:"common.white", p:2, borderRadius:"10px"}}>
+					<DemoContainer
+						components={['DatePicker', 'DatePicker']}
+						sx={{ backgroundColor: 'common.white', p: 2, borderRadius: '10px' }}
+					>
 						<DatePicker
 							label="Controlled picker"
 							value={fromDate}

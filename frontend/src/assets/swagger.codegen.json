@@ -44,6 +44,35 @@
 				}
 			}
 		},
+		"/point/garbage/{garbage_id}": {
+			"get": {
+				"tags": ["point"],
+				"summary": "Get Point Info",
+				"operationId": "get_point_info_point_garbage__garbage_id__get",
+				"parameters": [
+					{
+						"name": "garbage_id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "integer", "title": "Garbage Id" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
 		"/point/add": {
 			"post": {
 				"tags": ["point"],
@@ -132,20 +161,12 @@
 				"tags": ["user"],
 				"summary": "Login User H",
 				"operationId": "login_user_h_user_login_post",
-				"parameters": [
-					{
-						"name": "email",
-						"in": "query",
-						"required": true,
-						"schema": { "type": "string", "title": "Email" }
+				"requestBody": {
+					"content": {
+						"application/json": { "schema": { "$ref": "#/components/schemas/LogUsr" } }
 					},
-					{
-						"name": "password",
-						"in": "query",
-						"required": true,
-						"schema": { "type": "string", "title": "Password" }
-					}
-				],
+					"required": true
+				},
 				"responses": {
 					"200": {
 						"description": "Successful Response",
@@ -190,6 +211,93 @@
 					}
 				}
 			}
+		},
+		"/report/period": {
+			"post": {
+				"tags": ["report"],
+				"summary": "Get Period",
+				"operationId": "get_period_report_period_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/ReportPeriod" }
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/statisticcontainer": {
+			"post": {
+				"tags": ["statistic"],
+				"summary": "Get Statistic",
+				"operationId": "get_statistic_statisticcontainer_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/StatisticData" }
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/statisticsolve": {
+			"post": {
+				"tags": ["statistic"],
+				"summary": "Get Statistic",
+				"operationId": "get_statistic_statisticsolve_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/StatisticData" }
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -204,6 +312,15 @@
 				},
 				"type": "object",
 				"title": "HTTPValidationError"
+			},
+			"LogUsr": {
+				"properties": {
+					"email": { "type": "string", "title": "Email" },
+					"password": { "type": "string", "title": "Password" }
+				},
+				"type": "object",
+				"required": ["email", "password"],
+				"title": "LogUsr"
 			},
 			"PointData": {
 				"properties": {
@@ -226,6 +343,17 @@
 				"required": ["email", "password", "name"],
 				"title": "RegUsr"
 			},
+			"ReportPeriod": {
+				"properties": {
+					"lat": { "type": "string", "title": "Lat" },
+					"lon": { "type": "string", "title": "Lon" },
+					"ts_1": { "type": "string", "title": "Ts 1" },
+					"ts_2": { "type": "string", "title": "Ts 2" }
+				},
+				"type": "object",
+				"required": ["lat", "lon", "ts_1", "ts_2"],
+				"title": "ReportPeriod"
+			},
 			"ReportToday": {
 				"properties": {
 					"lat": { "type": "string", "title": "Lat" },
@@ -234,6 +362,15 @@
 				"type": "object",
 				"required": ["lat", "lon"],
 				"title": "ReportToday"
+			},
+			"StatisticData": {
+				"properties": {
+					"ts_1": { "type": "string", "title": "Ts 1" },
+					"ts_2": { "type": "string", "title": "Ts 2" }
+				},
+				"type": "object",
+				"required": ["ts_1", "ts_2"],
+				"title": "StatisticData"
 			},
 			"ValidationError": {
 				"properties": {

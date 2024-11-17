@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 // import './LoginPage.scss';
 import left_grey_house from '../../assets/svg/left_grey_house.svg';
 import left_white_house from '../../assets/svg/left_white_house.svg';
@@ -24,8 +24,31 @@ import eight from '../../assets/svg/8.svg';
 import nine from '../../assets/svg/9.svg';
 import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
 import './LoginPage.scss';
+import { api } from '../../api/api.ts';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage: FC = () => {
+	const navigate = useNavigate();
+
+	const [email, setEmail] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+
+	const handleSubmit = async (email: string, password: string) => {
+		await api
+			.post('user/login', {
+				email,
+				password,
+			})
+			.then((res) => {
+				if (res.statusText === 'OK') {
+					navigate('/');
+				}
+			})
+			.catch((err) => {
+				throw new Error(`Failed to fetch user data:\n${err}`);
+			});
+	};
+
 	return (
 		<section className="login">
 			<div className="main_wrapper">
@@ -81,15 +104,24 @@ export const LoginPage: FC = () => {
 					<TextField
 						id="login_user_email"
 						label="Почта"
-						sx={[
-							{ color: 'secondary.main', width: '0.9', backgroundColor: 'common.white' },
-							{ '&:autofill': { backgroundColor: 'common.white' } },
-						]}
+						onChange={({ target }) => setEmail(target.value)}
+						value={email}
+						sx={{
+							color: 'secondary.main',
+							width: '0.9',
+							backgroundColor: 'white',
+							'& input:-webkit-autofill': {
+								WebkitBoxShadow: '0 0 0 100px white inset',
+								WebkitTextFillColor: 'black',
+							},
+						}}
 					/>
 
 					<TextField
 						id="login_user_password"
 						label="Пароль"
+						onChange={({ target }) => setPassword(target.value)}
+						value={password}
 						sx={{ color: 'secondary.main', width: '0.9' }}
 						type="password"
 						name="password"
@@ -100,6 +132,7 @@ export const LoginPage: FC = () => {
 					className="login__btn"
 					variant="contained"
 					sx={{ borderRadius: '10px', px: 5, py: 1.5 }}
+					onClick={() => handleSubmit(email, password)}
 				>
 					Войти
 				</Button>

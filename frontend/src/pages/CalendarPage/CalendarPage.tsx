@@ -22,24 +22,7 @@ export const CalendarPage: FC = () => {
 			.catch((err) => {
 				console.error(err);
 			});
-
-		// await api.post('point/add', {
-		// 	address: 'MOSCOW',
-		// 	lat: "121212.123",
-		// 	lon: "121422.123",
-		// 	photo: basePhoto,
-		// }).then((res) => {
-		// 	console.log(res);
-		// }).catch(err => {
-		// 	console.error(err)
-		// })
 	};
-
-	// useEffect(() => {
-	// 	api.get('point/all').then((res) => {
-	// 		console.log(res);
-	// 	});
-	// }, []);
 
 	return (
 		<Grid2
