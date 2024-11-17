@@ -1,0 +1,391 @@
+{
+	"openapi": "3.1.0",
+	"info": { "title": "FastAPI", "version": "0.1.0" },
+	"paths": {
+		"/point/all": {
+			"get": {
+				"tags": ["point"],
+				"summary": "Get All Points H",
+				"operationId": "get_all_points_h_point_all_get",
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					}
+				}
+			}
+		},
+		"/point/{point_id}": {
+			"get": {
+				"tags": ["point"],
+				"summary": "Get Point Info",
+				"operationId": "get_point_info_point__point_id__get",
+				"parameters": [
+					{
+						"name": "point_id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "integer", "title": "Point Id" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/point/garbage/{garbage_id}": {
+			"get": {
+				"tags": ["point"],
+				"summary": "Get Point Info",
+				"operationId": "get_point_info_point_garbage__garbage_id__get",
+				"parameters": [
+					{
+						"name": "garbage_id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "integer", "title": "Garbage Id" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/point/add": {
+			"post": {
+				"tags": ["point"],
+				"summary": "Create Point",
+				"operationId": "create_point_point_add_post",
+				"requestBody": {
+					"content": {
+						"application/json": { "schema": { "$ref": "#/components/schemas/PointData" } }
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/{user_id}": {
+			"get": {
+				"tags": ["user"],
+				"summary": "Get User H",
+				"operationId": "get_user_h_user__user_id__get",
+				"parameters": [
+					{
+						"name": "user_id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "integer", "title": "User Id" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/registration": {
+			"post": {
+				"tags": ["user"],
+				"summary": "Create User H",
+				"operationId": "create_user_h_user_registration_post",
+				"requestBody": {
+					"content": {
+						"application/json": { "schema": { "$ref": "#/components/schemas/RegUsr" } }
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/login": {
+			"post": {
+				"tags": ["user"],
+				"summary": "Login User H",
+				"operationId": "login_user_h_user_login_post",
+				"requestBody": {
+					"content": {
+						"application/json": { "schema": { "$ref": "#/components/schemas/LogUsr" } }
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/report/today": {
+			"post": {
+				"tags": ["report"],
+				"summary": "Get Today",
+				"operationId": "get_today_report_today_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/ReportToday" }
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/report/period": {
+			"post": {
+				"tags": ["report"],
+				"summary": "Get Period",
+				"operationId": "get_period_report_period_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/ReportPeriod" }
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/statisticcontainer": {
+			"post": {
+				"tags": ["statistic"],
+				"summary": "Get Statistic",
+				"operationId": "get_statistic_statisticcontainer_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/StatisticData" }
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/statisticsolve": {
+			"post": {
+				"tags": ["statistic"],
+				"summary": "Get Statistic",
+				"operationId": "get_statistic_statisticsolve_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/StatisticData" }
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"HTTPValidationError": {
+				"properties": {
+					"detail": {
+						"items": { "$ref": "#/components/schemas/ValidationError" },
+						"type": "array",
+						"title": "Detail"
+					}
+				},
+				"type": "object",
+				"title": "HTTPValidationError"
+			},
+			"LogUsr": {
+				"properties": {
+					"email": { "type": "string", "title": "Email" },
+					"password": { "type": "string", "title": "Password" }
+				},
+				"type": "object",
+				"required": ["email", "password"],
+				"title": "LogUsr"
+			},
+			"PointData": {
+				"properties": {
+					"address": { "type": "string", "title": "Address" },
+					"lat": { "type": "string", "title": "Lat" },
+					"lon": { "type": "string", "title": "Lon" },
+					"photo": { "type": "string", "title": "Photo" }
+				},
+				"type": "object",
+				"required": ["address", "lat", "lon", "photo"],
+				"title": "PointData"
+			},
+			"RegUsr": {
+				"properties": {
+					"email": { "type": "string", "title": "Email" },
+					"password": { "type": "string", "title": "Password" },
+					"name": { "type": "string", "title": "Name" }
+				},
+				"type": "object",
+				"required": ["email", "password", "name"],
+				"title": "RegUsr"
+			},
+			"ReportPeriod": {
+				"properties": {
+					"lat": { "type": "string", "title": "Lat" },
+					"lon": { "type": "string", "title": "Lon" },
+					"ts_1": { "type": "string", "title": "Ts 1" },
+					"ts_2": { "type": "string", "title": "Ts 2" }
+				},
+				"type": "object",
+				"required": ["lat", "lon", "ts_1", "ts_2"],
+				"title": "ReportPeriod"
+			},
+			"ReportToday": {
+				"properties": {
+					"lat": { "type": "string", "title": "Lat" },
+					"lon": { "type": "string", "title": "Lon" }
+				},
+				"type": "object",
+				"required": ["lat", "lon"],
+				"title": "ReportToday"
+			},
+			"StatisticData": {
+				"properties": {
+					"ts_1": { "type": "string", "title": "Ts 1" },
+					"ts_2": { "type": "string", "title": "Ts 2" }
+				},
+				"type": "object",
+				"required": ["ts_1", "ts_2"],
+				"title": "StatisticData"
+			},
+			"ValidationError": {
+				"properties": {
+					"loc": {
+						"items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+						"type": "array",
+						"title": "Location"
+					},
+					"msg": { "type": "string", "title": "Message" },
+					"type": { "type": "string", "title": "Error Type" }
+				},
+				"type": "object",
+				"required": ["loc", "msg", "type"],
+				"title": "ValidationError"
+			}
+		}
+	}
+}
