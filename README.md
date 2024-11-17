@@ -8,7 +8,7 @@
     <br>
     <a href="https://www.figma.com/design/mvxSqON2dbA4eldvHYSYrP/Tula?node-id=0-1&t=7iQSe86XgrCLDJSr-1" target="_blank"><strong>Презентация »</strong></a>
     <br />
-    <strike><strong>Попробовать »</strong></strike>
+    <strong><a href="http://82.97.249.28:3000" target="_blank"><strong>Попробовать »</strong></a></strong>
     <br />
     </p>
 </div>
