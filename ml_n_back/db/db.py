@@ -480,6 +480,42 @@ async def get_statistic_container_solve(data):
             logger.info('Database connection closed.')
 
 
+async def get_statistic_solve(data):
+    connection = db_connection()
+    cursor = connection.cursor()
+
+    try:
+        query = sql.SQL("""SELECT status FROM garbage WHERE Date(ts_1) = %s""")
+        cursor.execute(query, (data,))
+        rows = cursor.fetchall()
+        static = {
+            "error": 0,
+            "solve": 0,
+        }
+        for row in rows:
+            status = row[0]
+            if status == "have":
+                static["error"] += 1
+
+        query = sql.SQL("""SELECT status FROM garbage WHERE Date(ts_2) = %s""")
+        cursor.execute(query, (data,))
+        rows = cursor.fetchall()
+        for row in rows:
+            status = row[0]
+            if status == "solve":
+                static["solve"] += 1
+        return static
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        logger.error(error)
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+            logger.info('Database connection closed.')
+
+
+
 async def get_report_today(lat, lon):
     connection = db_connection()
     cursor = connection.cursor()

@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, \
     get_point_by_coordinates, get_user, login_user, get_statistic_container, get_statistic_container_solve, \
-    get_report_in_day, add_garbage, get_garbage_information_by_id
+    get_report_in_day, add_garbage, get_garbage_information_by_id, get_statistic_solve
 from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, \
     get_point_by_coordinates, get_user, login_user, get_report_today
 
@@ -354,7 +354,7 @@ class StatisticData(BaseModel):
         arbitrary_types_allowed = True
 
 
-@statistic_router.post("container")
+@statistic_router.post("/container")
 async def get_statistic(data: StatisticData):
     data = data.dict()
     ts1 = (datetime.strptime(data["ts_1"], "%Y-%m-%d %H:%M:%S")).date()
@@ -377,7 +377,7 @@ async def get_statistic(data: StatisticData):
     return statics
 
 
-@statistic_router.post("solve")
+@statistic_router.post("/solve")
 async def get_statistic(data: StatisticData):
     data = data.dict()
     ts1 = (datetime.strptime(data["ts_1"], "%Y-%m-%d %H:%M:%S")).date()
@@ -396,6 +396,13 @@ async def get_statistic(data: StatisticData):
         ts1 += timedelta(days=1)
 
     return statics
+
+
+@statistic_router.post("/trash")
+async def get_statistic():
+    ts1 = datetime.now().date()
+    static = await get_statistic_solve(ts1)
+    return static
 
 
 app.include_router(statistic_router, prefix="/statistic", tags=["statistic"])
