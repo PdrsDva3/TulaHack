@@ -27,9 +27,9 @@ async def get_all_points():
     try:
         three_days_ago = datetime.now().date() - timedelta(days=3)
         query = sql.SQL("""
-        SELECT id, address, lat, lon, last_ts, problems FROM points
+        SELECT id, address, lat, lon, last_ts, problems FROM points where problems != %s; 
         """)
-        cursor.execute(query)
+        cursor.execute(query, ("garbage", ))
 
         rows = cursor.fetchall()
         points = []
@@ -278,6 +278,14 @@ VALUES (%s, %s, %s, %s, %s, %s, %s);""")
                 """
             )
             cursor.execute(query, (ts, photo, status, row[0]))
+
+        query = sql.SQL(
+            """update points
+            set problems = %s
+            where lat = %s and lon = %s;
+            """
+        )
+        cursor.execute(query, ("garbage", lat, lon,))
 
         connection.commit()
         logger.info("Created successfully")
