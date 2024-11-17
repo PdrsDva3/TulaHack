@@ -19,7 +19,7 @@ export const StatisticPage: FC = () => {
 	const [problemStatsToday, setProblemStatsToday] = useState([0, 0]);
 
 	const [trashStats, setTrashStats] = useState([0, 0, 0]);
-	const [garbageStats, setGarbageStats] = useState([0, 0]);
+	// const [garbageStats, setGarbageStats] = useState([0, 0]);
 	const [problemStats, setProblemStats] = useState([0, 0]);
 
 	const fetchTodayStats = async () => {
@@ -31,29 +31,31 @@ export const StatisticPage: FC = () => {
 
 		try {
 			const trashResponse = await axios.post(
-				'http://82.97.249.28:8000/statisticcontainer',
+				'http://82.97.249.28:8000/statistic/container',
 				payload,
 			);
-			// const garbageResponse = await axios.post('http://82.97.249.28:8000/statisticgarbage', payload);
+			const garbageResponse = await axios.post(
+				'http://82.97.249.28:8000/statistic/trash',
+				{},
+			);
 			const problemResponse = await axios.post(
-				'http://82.97.249.28:8000/statisticsolve',
+				'http://82.97.249.28:8000/statistic/solve',
 				payload,
 			);
 
 			const { see, bad, no_see } = trashResponse.data;
-			// const { handled, not_handled } = garbageResponse.data;
-			const { error, solve } = problemResponse.data;
+			const { error: garbageError, solve: garbageSolve } = garbageResponse.data;
+			const { error: problemError, solve: problemSolve } = problemResponse.data;
 
 			setTrashStatsToday([see, bad, no_see]);
-			// setGarbageStatsToday([handled, not_handled]);
-			setProblemStatsToday([error, solve]);
+			setGarbageStatsToday([garbageError, garbageSolve]);
+			setProblemStatsToday([problemError, problemSolve]);
 		} catch (error) {
 			console.error('Ошибка при загрузке статистики для светового дня:', error);
 		}
 	};
 
 	useEffect(() => {
-		// Fetch stats for the current light day on component mount
 		fetchTodayStats();
 	}, []);
 
@@ -74,7 +76,7 @@ export const StatisticPage: FC = () => {
 	const fetchTrashStats = async (payload: { ts_1: string; ts_2: string }) => {
 		try {
 			const response = await axios.post(
-				'http://82.97.249.28:8000/statisticcontainer',
+				'http://82.97.249.28:8000/statistic/container',
 				payload,
 			);
 			const { see, bad, no_see } = response.data;
@@ -84,23 +86,23 @@ export const StatisticPage: FC = () => {
 		}
 	};
 
-	const fetchGarbageStats = async (payload: { ts_1: string; ts_2: string }) => {
-		try {
-			const response = await axios.post(
-				'http://82.97.249.28:8000/statisticgarbage',
-				payload,
-			);
-			const { handled, not_handled } = response.data;
-			setGarbageStats([handled, not_handled]);
-		} catch (error) {
-			console.error('Ошибка при загрузке статистики для свалок:', error);
-		}
-	};
+	// const fetchGarbageStats = async (payload: { ts_1: string; ts_2: string }) => {
+	// 	try {
+	// 		const response = await axios.post(
+	// 			'http://82.97.249.28:8000/statistic/trash',
+	// 			payload,
+	// 		);
+	// 		const { garbageError, garbageSolve } = response.data;
+	// 		setGarbageStats([ garbageError, garbageSolve ]);
+	// 	} catch (error) {
+	// 		console.error('Ошибка при загрузке статистики для свалок:', error);
+	// 	}
+	// };
 
 	const fetchProblemStats = async (payload: { ts_1: string; ts_2: string }) => {
 		try {
 			const response = await axios.post(
-				'http://82.97.249.28:8000/statisticsolve',
+				'http://82.97.249.28:8000/statistic/solve',
 				payload,
 			);
 			const { error, solve } = response.data;
@@ -205,19 +207,19 @@ export const StatisticPage: FC = () => {
 						desc={StatisticDescription.trash}
 						data={trashStats.map((value, id) => ({ id, value }))}
 					/>
-					<StatisticCard
-						title="Несанкционированные свалки:"
-						series={[
-							{
-								data: garbageStats.map((value, id) => ({ id, value })),
-								outerRadius: 60,
-								innerRadius: 30,
-							},
-						]}
-						palette={StatisticPalette.garbage}
-						desc={StatisticDescription.garbage}
-						data={garbageStats.map((value, id) => ({ id, value }))}
-					/>
+					{/*<StatisticCard*/}
+					{/*	title="Несанкционированные свалки:"*/}
+					{/*	series={[*/}
+					{/*		{*/}
+					{/*			data: garbageStats.map((value, id) => ({ id, value })),*/}
+					{/*			outerRadius: 60,*/}
+					{/*			innerRadius: 30,*/}
+					{/*		},*/}
+					{/*	]}*/}
+					{/*	palette={StatisticPalette.garbage}*/}
+					{/*	desc={StatisticDescription.garbage}*/}
+					{/*	data={garbageStats.map((value, id) => ({ id, value }))}*/}
+					{/*/>*/}
 					<StatisticCard
 						title="Выявленные проблемы:"
 						series={[

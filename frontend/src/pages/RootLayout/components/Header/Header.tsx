@@ -3,6 +3,7 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import { AppBar, SvgIcon, Typography, Box, Button } from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { MapOutlined, LeaderboardOutlined } from '@mui/icons-material';
+import TelegramIcon from '@mui/icons-material/Telegram';
 import LogOut from '../../../../assets/svg/logout.svg?react';
 import House from '../../../../assets/svg/house.svg?react';
 
@@ -82,19 +83,40 @@ export const Header: FC = () => {
 				</NavLink>
 			</Box>
 
-			<Button
-				variant="text"
-				sx={{ color: 'common.black', gap: 2 }}
-				onClick={() => navigate('/login')}
+			<Box
+				sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}
 			>
-				<LogOut style={{ width: '25px', height: '25px' }} />
-				<Typography
-					variant="h3"
-					sx={{ color: 'common.black', textTransform: 'none', fontWeight: 500 }}
+				<a
+					style={{ color: 'common.black', cursor: 'pointer' }}
+					href="https://t.me/MISIS_GogoRiki_bot"
+					target="_blank"
 				>
-					Выйти
-				</Typography>
-			</Button>
+					<SvgIcon
+						sx={{
+							color: 'common.black',
+							gap: 2,
+							textAlign: 'center',
+							verticalAlign: 'middle',
+						}}
+					>
+						<TelegramIcon />
+					</SvgIcon>
+				</a>
+
+				<Button
+					variant="text"
+					sx={{ color: 'common.black', gap: 2 }}
+					onClick={() => navigate('/login')}
+				>
+					<LogOut style={{ width: '25px', height: '25px' }} />
+					<Typography
+						variant="h3"
+						sx={{ color: 'common.black', textTransform: 'none', fontWeight: 500 }}
+					>
+						Выйти
+					</Typography>
+				</Button>
+			</Box>
 		</AppBar>
 	);
 };

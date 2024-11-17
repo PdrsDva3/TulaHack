@@ -37,6 +37,26 @@ export class PointService {
 		});
 	}
 	/**
+	 * Get Point Info
+	 * @param garbageId
+	 * @returns any Successful Response
+	 * @throws ApiError
+	 */
+	public static getPointInfoPointGarbageGarbageIdGet(
+		garbageId: number,
+	): CancelablePromise<any> {
+		return __request(OpenAPI, {
+			method: 'GET',
+			url: '/point/garbage/{garbage_id}',
+			path: {
+				garbage_id: garbageId,
+			},
+			errors: {
+				422: `Validation Error`,
+			},
+		});
+	}
+	/**
 	 * Create Point
 	 * @param requestBody
 	 * @returns any Successful Response

@@ -241,11 +241,11 @@
 				}
 			}
 		},
-		"/statisticcontainer": {
+		"/statistic/container": {
 			"post": {
 				"tags": ["statistic"],
 				"summary": "Get Statistic",
-				"operationId": "get_statistic_statisticcontainer_post",
+				"operationId": "get_statistic_statistic_container_post",
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -270,11 +270,11 @@
 				}
 			}
 		},
-		"/statisticsolve": {
+		"/statistic/solve": {
 			"post": {
 				"tags": ["statistic"],
 				"summary": "Get Statistic",
-				"operationId": "get_statistic_statisticsolve_post",
+				"operationId": "get_statistic_statistic_solve_post",
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -295,6 +295,19 @@
 								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
 							}
 						}
+					}
+				}
+			}
+		},
+		"/statistic/trash": {
+			"post": {
+				"tags": ["statistic"],
+				"summary": "Get Statistic",
+				"operationId": "get_statistic_statistic_trash_post",
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
 					}
 				}
 			}
