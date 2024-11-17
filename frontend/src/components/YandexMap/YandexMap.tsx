@@ -7,8 +7,8 @@ interface YandexMapProps {
 	center: [number, number];
 	zoom: number;
 	apiEndpoint: string;
-	onMarkerClick: (pointDetails: PointDetailsWithGarbage) => void;
-	onLoadingChange: (isLoading: boolean) => void; // Новый проп для контроля состояния загрузки
+	onMarkerClick?: (pointDetails: PointDetailsWithGarbage) => void;
+	onLoadingChange?: (isLoading: boolean) => void; // Новый проп для контроля состояния загрузки
 }
 
 export const YandexMap: React.FC<YandexMapProps> = ({
@@ -39,15 +39,15 @@ export const YandexMap: React.FC<YandexMapProps> = ({
 	// Загрузка подробностей точки
 	const fetchPointDetails = async (id: number, isGarbage: boolean) => {
 		try {
-			onLoadingChange(true);
+			onLoadingChange?.(true);
 
 			const response = await api.get<PointDetails>(`/point/${id}`);
-			onMarkerClick({ ...response.data, isGarbage });
+			onMarkerClick?.({ ...response.data, isGarbage });
 
-			onLoadingChange(false);
+			onLoadingChange?.(false);
 		} catch (error) {
 			console.error('Ошибка загрузки данных точки:', error);
-			onLoadingChange(false);
+			onLoadingChange?.(false);
 		}
 	};
 

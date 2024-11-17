@@ -1,7 +1,7 @@
 import { PieChart, PieChartProps } from '@mui/x-charts';
 import { Box, Chip, Container } from '@mui/material';
 
-interface StatisticCardProps extends PieChartProps {
+interface StatisticCardProps extends Omit<PieChartProps, 'desc'> {
 	title: string;
 	palette: string[];
 	desc: string[];
@@ -13,7 +13,6 @@ export const StatisticCard: React.FC<StatisticCardProps> = ({
 	palette,
 	desc,
 	data,
-	series,
 }) => {
 	return (
 		<Container
