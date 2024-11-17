@@ -138,9 +138,15 @@ export const InfoCard: React.FC<InfoCardProps> = ({
 				sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center', gap: 5 }}
 			>
 				<Typography variant="h4">Контейнеры:</Typography>
-				<Typography variant="h5" sx={{ color: 'secondary.dark' }}>
+				{containers.Container ?
+					<Typography variant="h5" sx={{ color: 'secondary.dark' }}>
 					{containers.Container} шт.
 				</Typography>
+					:
+					<Typography variant="h5" sx={{ color: 'secondary.dark' }}>
+						Не определено
+					</Typography>
+				}
 			</Box>
 		</Container>
 	);

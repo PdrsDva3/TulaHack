@@ -85,7 +85,7 @@ export const CalendarPage: FC = () => {
 							color: 'common.black',
 						}}
 					>
-						Скачать последний отчет
+						Скачать отчет по параметрам
 					</Typography>
 				</Button>
 			</Grid2>

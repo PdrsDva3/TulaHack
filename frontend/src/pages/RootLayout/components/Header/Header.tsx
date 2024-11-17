@@ -1,11 +1,10 @@
 import { FC } from 'react';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
-import { AppBar, SvgIcon, Typography, Box, Toolbar, Button } from '@mui/material';
+import { AppBar, SvgIcon, Typography, Box, Button } from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { MapOutlined, LeaderboardOutlined } from '@mui/icons-material';
 import LogOut from '../../../../assets/svg/logout.svg?react';
 import House from '../../../../assets/svg/house.svg?react';
-import './Header.scss';
 
 export const Header: FC = () => {
 	const navigate = useNavigate();
@@ -20,13 +19,14 @@ export const Header: FC = () => {
 				flexDirection: 'row',
 				justifyContent: 'space-around',
 				alignItems: 'center',
+				py:1
 			}}
 		>
 			<Button variant="text" sx={{ color: 'common.black' }} onClick={() => navigate('/')}>
 				<House />
 			</Button>
 
-			<Toolbar sx={{ display: 'flex', gap: 10 }}>
+			<Box sx={{ display: 'flex', gap: 10 , py:1}}>
 				<NavLink to="/monitoring">
 					{({ isActive }) => (
 						<Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
@@ -80,7 +80,7 @@ export const Header: FC = () => {
 						</Box>
 					)}
 				</NavLink>
-			</Toolbar>
+			</Box>
 
 			<Button
 				variant="text"

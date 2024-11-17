@@ -44,7 +44,7 @@ export const MapPage: FC = () => {
 						<SvgIcon sx={{ color: 'green' }}>
 							<Brightness1Icon />
 						</SvgIcon>
-						<Typography variant="h6" color="secondary.dark" width="10vw">
+						<Typography variant="h6" color="secondary.dark" width="12vw">
 							Контейнерная площадка без проблем
 						</Typography>
 					</Box>
@@ -55,7 +55,7 @@ export const MapPage: FC = () => {
 						<SvgIcon sx={{ color: 'orange' }}>
 							<Brightness1Icon />
 						</SvgIcon>
-						<Typography variant="h6" color="secondary.dark" width="10vw">
+						<Typography variant="h6" color="secondary.dark" width="12vw">
 							Контейнерная с выявленной проблемой
 						</Typography>
 					</Box>
@@ -66,7 +66,7 @@ export const MapPage: FC = () => {
 						<SvgIcon sx={{ color: '#FF0303' }}>
 							<Brightness1Icon />
 						</SvgIcon>
-						<Typography variant="h6" color="secondary.dark" width="10vw">
+						<Typography variant="h6" color="secondary.dark" width="12vw">
 							Не вывезенные контейнерные площадки
 						</Typography>
 					</Box>
@@ -77,7 +77,7 @@ export const MapPage: FC = () => {
 						<SvgIcon sx={{ color: 'blue' }}>
 							<Brightness1Icon />
 						</SvgIcon>
-						<Typography variant="h6" color="secondary.dark" width="10vw">
+						<Typography variant="h6" color="secondary.dark" width="12vw">
 							Несанкционированные контейерные площадки
 						</Typography>
 					</Box>

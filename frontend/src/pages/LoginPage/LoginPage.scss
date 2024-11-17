@@ -506,10 +506,11 @@
 }
 
 .nine {
+	overflow: hidden;
 	position: absolute;
 	right: 50%;
 	transform: translate(50%);
-	top: 95%;
+	bottom: 0;
 	animation-duration: 1200ms;
 	animation-name: nine;
 	z-index: 5;

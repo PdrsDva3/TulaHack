@@ -4,12 +4,12 @@ import dayjs, { Dayjs } from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Chip, Container } from '@mui/material';
+import { Box, Chip, Container } from '@mui/material';
 import { StatisticCard } from './components';
 
 export const StatisticPage: FC = () => {
-	const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs('2024-04-17'));
-	const [toDate, setToDate] = useState<Dayjs | null>(dayjs('2024-04-18'));
+	const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs('2024-11-16'));
+	const [toDate, setToDate] = useState<Dayjs | null>(dayjs('2024-11-17'));
 
 	const paletteGarbage = ['#008000', '#FFA500', '#FF0303'];
 
@@ -24,8 +24,8 @@ export const StatisticPage: FC = () => {
 	const descProblem = ['Решено', 'Не решено'];
 
 	return (
-		<Container sx={{ display: 'flex', gap: 6, pt: 10 }}>
-			<Container sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+		<Box sx={{ display: 'flex', gap: 6, pt: 12 }}>
+			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
 				<Chip
 					label="Статистика на текущий момент 17.11.24"
 					sx={{
@@ -82,7 +82,7 @@ export const StatisticPage: FC = () => {
 					palette={paletteProblem}
 					desc={descProblem}
 				/>
-			</Container>
+			</Box>
 			<Container sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
 				<Chip
 					label="Статистика за выбранный период:"
@@ -101,12 +101,12 @@ export const StatisticPage: FC = () => {
 						sx={{ backgroundColor: 'common.white', p: 2, borderRadius: '10px' }}
 					>
 						<DatePicker
-							label="Controlled picker"
+							label="Выберите дату"
 							value={fromDate}
 							onChange={(newValue) => setFromDate(newValue)}
 						/>
 						<DatePicker
-							label="Controlled picker"
+							label="Выберите дату"
 							value={toDate}
 							onChange={(newValue) => setToDate(newValue)}
 						/>
@@ -114,7 +114,7 @@ export const StatisticPage: FC = () => {
 				</LocalizationProvider>
 
 				<StatisticCard
-					title="Сосотояние КП в период 15.11.24-15.11.24:"
+					title="Сосотояние КП в период 16.11.24-17.11.24:"
 					series={[
 						{
 							data: [
@@ -131,7 +131,7 @@ export const StatisticPage: FC = () => {
 				/>
 
 				<StatisticCard
-					title="Несанкционированные свалки 15.11.24-15.11.24:"
+					title="Несанкционированные свалки 16.11.24-17.11.24:"
 					series={[
 						{
 							data: [
@@ -147,7 +147,7 @@ export const StatisticPage: FC = () => {
 				/>
 
 				<StatisticCard
-					title="Выявленные проблемы в период 15.11.24-15.11.24:"
+					title="Выявленные проблемы в период 16.11.24-17.11.24:"
 					series={[
 						{
 							data: [
@@ -162,6 +162,6 @@ export const StatisticPage: FC = () => {
 					desc={descProblem}
 				/>
 			</Container>
-		</Container>
+		</Box>
 	);
 };
