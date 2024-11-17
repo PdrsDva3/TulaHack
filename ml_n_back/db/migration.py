@@ -86,6 +86,11 @@ CREATE TABLE IF NOT EXISTS statistic_points
     have_problem int,
     no_see int
 );
+
+CREATE TABLE IF NOT EXISTS tg_users
+(
+    id_tg bigint
+);
 """)
 
         cur.execute(create)  # Выполняем запрос на создание таблицы
