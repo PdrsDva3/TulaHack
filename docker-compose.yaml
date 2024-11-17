@@ -28,10 +28,26 @@ services:
       - backend
     ports:
       - "8000:8000"  # Порт, на котором будет работать приложение
+  frontend:
+    build: ./frontend
+    expose: [ 3000 ]
+    restart: unless-stopped
+    init: true
+    env_file:
+      - ./frontend/.env
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
 
 # Объем для данных базы данных
 volumes:
+  caddy_data:
+  caddy_config:
   pgdata:
+  static:
 
 # Сети для изоляции
 networks:
