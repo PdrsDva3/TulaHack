@@ -68,12 +68,8 @@
     - [x] Генерация текста на основе запроса
     - [x] Составление краткого отчета на основе данных и возможность скачать его
 
-- [x] Модель
-    - [x] Статистика
-    - [x] Аналитика
-    - [ ] Детекция:
-    - [x] Разметка train dataset
-    - [x] Fine-tuning YOLO-v11 на 1к train_dataset
-    - [x] Fine-tuning YOLO-v11 на 6к train_dataset
-    - [ ] OCR (tesseract)
-    - [ ] Формирование логов
+- [ ] Детекция:
+  - [x] Формирование train dataset
+  - [x] Fine-tuning YOLO-v11s  на 12к train_dataset
+  - [x] Fine-tuning YOLO-v11m  на 18к train_dataset
+  - [x] Формирование логов
