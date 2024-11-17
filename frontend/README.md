@@ -1,50 +1,45 @@
-# React + TypeScript + Vite
+# react-vite-ts-swc-template
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Данный шаблон проекта предназначен для быстрого создания react-приложений на языке TypeScript, 
+> созданный на базе vite-swc.
 
-Currently, two official plugins are available:
+> Дата создания шаблона: 28.09.2024
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Quick start:
 
-## Expanding the ESLint configuration
+### 1. `>> cd frontend`
+### 2. `>> npm i`
+### 3. `>> npm run dev`
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Change list:
 
-- Configure the top-level `parserOptions` property like this:
+## `/app`:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### `/.editorconfig`:
+- создан и сконфигурирован
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### `/.prettierrc.json`:
+- создан и сконфигурирован
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### `/package.json`:
+- `"sass": "^1.79.4"` - [css-препроцессор](https://www.npmjs.com/package/sass)
+- `"prettier": "^3.3.3"`
+- `"vite-plugin-svgr": "^4.2.0"` - [импорт файлов `.svg` как react-компонент](https://www.npmjs.com/package/vite-plugin-svgr)
+> Пример использования пакета `"vite-plugin-svgr"` есть в `./App.tsx `
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+> Для стабильной работы плагина также был настроен `tsconfig.app.json` (добавлена строчка `"types": ["vite-plugin-svgr/client"]`)
+- `"browserslist": {...}`
+
+### `./index.html`:
+- Добавлена базовая мета-информация
+- Настроен импорт `main.tsx` файла
+
+### `/src`:
+- Стандартные стили были перенесены в отдельную папку `/styles`, туда входят:
+    - `App.scss`
+    - `class-names.scss` - отдельный файл для создания универсальных классовых имен
+    - `index.scss` - файл со стилями `:root` и тегов (?)
+    - `variables.scss` - отдельный файл для создания css-переменных
+    - `normalize.css` - нормализатор стилей
+
+Последние 4 стиля импортированы в `/main.tsx`.
