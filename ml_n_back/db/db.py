@@ -714,5 +714,3 @@ async def add_tg_user(id_tg):
             cursor.close()
             connection.close()
             logger.info('Database connection closed.')
-
-add_tg_user(976008787)
