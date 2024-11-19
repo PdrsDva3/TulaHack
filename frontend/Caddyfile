@@ -1,4 +1,4 @@
-82.97.249.28:443 {
+82.97.249.28:80 {
 	encode gzip
 	header {
     Cache-Control "public, max-age=31536000, immutable"
