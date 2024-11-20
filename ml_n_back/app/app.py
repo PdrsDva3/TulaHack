@@ -6,6 +6,7 @@ from gettext import translation
 from docx import Document
 from fastapi import FastAPI, HTTPException, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware as corss
 from pydantic import BaseModel
 from db.db import get_point_information_by_id, get_all_points, add_point_information, create_user, \
     get_point_by_coordinates, get_user, login_user, get_statistic_container, get_statistic_container_solve, \
@@ -29,13 +30,20 @@ origins = [
     "http://localhost:5174",
     "http://localhost:4173",
     "http://localhost:3000",
+    "https://localhost:8000",
+    "https://localhost:5173",
+    "https://localhost:5174",
+    "https://localhost:4173",
     "http://garbagegogoriki.ru",
     "http://garbagegogoriki.ru/api",
     "http://garbagegogoriki.ru/",
+    "https://garbagegogoriki.ru",
+    "https://garbagegogoriki.ru/api",
+    "https://garbagegogoriki.ru/",
 ]
 
 app.add_middleware(
-    CORSMiddleware,
+    corss,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
