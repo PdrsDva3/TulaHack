@@ -18,7 +18,7 @@ import uuid
 from fastapi.responses import FileResponse
 
 
-app = FastAPI()
+app = FastAPI(root_path="/api")
 
 origins = [
     "http://localhost.tiangolo.com",
@@ -29,6 +29,9 @@ origins = [
     "http://localhost:5174",
     "http://localhost:4173",
     "http://localhost:3000",
+    "http://garbagegogoriki.ru",
+    "http://garbagegogoriki.ru/api",
+    "http://garbagegogoriki.ru/",
 ]
 
 app.add_middleware(
@@ -38,6 +41,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.options("/{path:path}")
+async def options_route(path: str):
+    return Response(status_code=204)
 
 points_router = APIRouter()
 

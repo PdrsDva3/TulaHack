@@ -11,21 +11,20 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
-    networks:
-      - backend
+    #networks:
+    #  - backend
     ports:
       - "5433:5432"  # Открываем порт базы данных для соединений
 
   # Сервис для Python-приложения
   backend:
     build: ml_n_back
-    container_name: python_app
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
     depends_on:
       - db  # Ожидаем, что база данных будет готова
-    networks:
-      - backend
+    #networks:
+     # - backend
     ports:
       - "8000:8000"  # Порт, на котором будет работать приложение
   frontend:
@@ -38,6 +37,8 @@ services:
     ports:
       - 443:443
       - 80:80
+    #networks:
+     # - backend
     volumes:
       - caddy_data:/data
       - caddy_config:/config
@@ -50,6 +51,6 @@ volumes:
   static:
 
 # Сети для изоляции
-networks:
-  backend:
-    driver: bridge
+#networks:
+  #backend:
+    #driver: bridge
